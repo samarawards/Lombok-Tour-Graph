@@ -5,10 +5,9 @@ public class GEdgeKabupaten {
 
     GEdgeKabupaten next;
 
-    public GEdgeKabupaten (GNodeKabupaten from, GNodeKabupaten to, float weight){
+    public GEdgeKabupaten(GNodeKabupaten from, GNodeKabupaten to, float weight) {
         this.fromKab = from;
         this.toKab = to;
         this.weight = weight;
     }
-    
 }

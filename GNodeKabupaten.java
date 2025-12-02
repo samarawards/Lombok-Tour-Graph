@@ -2,24 +2,32 @@ public class GNodeKabupaten {
     String namaKabupaten;
     boolean visited;
     GEdgeKabupaten firstEdgeKab;
-    GEdgeWisata adj;
     
-    int jarakDariStart = Integer.MAX_VALUE; //== dist
+    float jarakDariStart = Float.MAX_VALUE; // Ganti int jadi float (karena weight float)
     
-    //nested graph
+    // Nested graph
     GraphWisata graphWisata;
     
     GNodeKabupaten prev;
     GNodeKabupaten next;
 
-    public GNodeKabupaten (String nama){
-        this.namaKabupaten = nama;    
+    public GNodeKabupaten(String nama) {
+        this.namaKabupaten = nama;
+        this.graphWisata = new GraphWisata(); 
+        this.visited = false;
     }
 
-    public void addEdgeKab(GNodeKabupaten to, float weight){
+    public void addEdgeKab(GNodeKabupaten to, float weight) {
         GEdgeKabupaten newEdge = new GEdgeKabupaten(this, to, weight);
-        //add first di kumpulan edgenya
+        // Add first di kumpulan edgenya
         newEdge.next = firstEdgeKab;
         firstEdgeKab = newEdge;
+    }
+    
+    // Method untuk reset Dijkstra
+    public void resetDijkstra() {
+        this.visited = false;
+        this.jarakDariStart = Float.MAX_VALUE;
+        this.prev = null;
     }
 }
