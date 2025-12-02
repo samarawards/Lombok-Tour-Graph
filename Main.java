@@ -77,7 +77,7 @@ public class Main {
         }
         
         // Setup dummy review untuk testing
-        DataWisata.setupDummyReview(gKab);
+        // DataWisata.setupDummyReview(gKab);
         
         return gKab;
     }

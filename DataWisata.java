@@ -403,50 +403,50 @@ public class DataWisata {
         graph.addJalurWisata("Pantai Nipah", "Desa Wisata Senaru", 38.0f);
     }
     
-    // Setup dummy review untuk testing
-    public static void setupDummyReview(GraphKabupaten graph) {
-        // Review untuk beberapa wisata populer
+    // // Setup dummy review untuk testing
+    // public static void setupDummyReview(GraphKabupaten graph) {
+    //     // Review untuk beberapa wisata populer
         
-        // Sembalun
-        GNodeKabupaten lombokTimur = graph.getNode("Lombok Timur");
-        if (lombokTimur != null) {
-            GNodeWisata sembalun = lombokTimur.graphWisata.getNode("Sembalun");
-            if (sembalun != null) {
-                sembalun.ulasan.push("Fatio", 5, "Pemandangan savana luar biasa! Must visit!", "01-12-2024");
-                sembalun.ulasan.push("Ayu", 4, "Bagus tapi jalannya rusak", "28-11-2024");
-                sembalun.ulasan.push("Ara", 5, "Udara sejuk dan view 360 derajat mantap", "25-11-2024");
-                sembalun.updateRating();
-            }
+    //     // Sembalun
+    //     GNodeKabupaten lombokTimur = graph.getNode("Lombok Timur");
+    //     if (lombokTimur != null) {
+    //         GNodeWisata sembalun = lombokTimur.graphWisata.getNode("Sembalun");
+    //         if (sembalun != null) {
+    //             sembalun.ulasan.push("Fatio", 5, "Pemandangan savana luar biasa! Must visit!", "01-12-2024");
+    //             sembalun.ulasan.push("Ayu", 4, "Bagus tapi jalannya rusak", "28-11-2024");
+    //             sembalun.ulasan.push("Ara", 5, "Udara sejuk dan view 360 derajat mantap", "25-11-2024");
+    //             sembalun.updateRating();
+    //         }
             
-            GNodeWisata pantaiPink = lombokTimur.graphWisata.getNode("Pantai Pink");
-            if (pantaiPink != null) {
-                pantaiPink.ulasan.push("Nazril", 5, "Pasir pink nya unik banget!", "02-12-2024");
-                pantaiPink.ulasan.push("Habib", 4, "Perjalanan jauh tapi worth it", "30-11-2024");
-                pantaiPink.updateRating();
-            }
-        }
+    //         GNodeWisata pantaiPink = lombokTimur.graphWisata.getNode("Pantai Pink");
+    //         if (pantaiPink != null) {
+    //             pantaiPink.ulasan.push("Nazril", 5, "Pasir pink nya unik banget!", "02-12-2024");
+    //             pantaiPink.ulasan.push("Habib", 4, "Perjalanan jauh tapi worth it", "30-11-2024");
+    //             pantaiPink.updateRating();
+    //         }
+    //     }
         
-        // Gili Trawangan
-        GNodeKabupaten lombokUtara = graph.getNode("Lombok Utara");
-        if (lombokUtara != null) {
-            GNodeWisata giliT = lombokUtara.graphWisata.getNode("Gili Trawangan");
-            if (giliT != null) {
-            giliT.ulasan.push("Naya", 5, "Party island terbaik di Indonesia!", "03-12-2024");
-            giliT.ulasan.push("Gea", 5, "Diving spot keren dan nightlife seru", "01-12-2024");
-            giliT.ulasan.push("Bang Ridho", 4, "Ramai tapi menyenangkan", "29-11-2024");
-            giliT.updateRating();
-            }
-        }
-        // Pantai Kuta Mandalika
-        GNodeKabupaten lombokTengah = graph.getNode("Lombok Tengah");
-        if (lombokTengah != null) {
-            GNodeWisata kuta = lombokTengah.graphWisata.getNode("Pantai Kuta Mandalika");
-            if (kuta != null) {
-                kuta.ulasan.push("Fatio", 5, "Pantai dengan pasir seperti merica, unik!", "02-12-2024");
-                kuta.ulasan.push("Nazril", 4, "Ombak bagus untuk surfing", "30-11-2024");
-                kuta.ulasan.push("Habib", 5, "Sunset view spektakuler", "27-11-2024");
-                kuta.updateRating();
-            }
-        }
-    }
+    //     // Gili Trawangan
+    //     GNodeKabupaten lombokUtara = graph.getNode("Lombok Utara");
+    //     if (lombokUtara != null) {
+    //         GNodeWisata giliT = lombokUtara.graphWisata.getNode("Gili Trawangan");
+    //         if (giliT != null) {
+    //         giliT.ulasan.push("Naya", 5, "Party island terbaik di Indonesia!", "03-12-2024");
+    //         giliT.ulasan.push("Gea", 5, "Diving spot keren dan nightlife seru", "01-12-2024");
+    //         giliT.ulasan.push("Bang Ridho", 4, "Ramai tapi menyenangkan", "29-11-2024");
+    //         giliT.updateRating();
+    //         }
+    //     }
+    //     // Pantai Kuta Mandalika
+    //     GNodeKabupaten lombokTengah = graph.getNode("Lombok Tengah");
+    //     if (lombokTengah != null) {
+    //         GNodeWisata kuta = lombokTengah.graphWisata.getNode("Pantai Kuta Mandalika");
+    //         if (kuta != null) {
+    //             kuta.ulasan.push("Fatio", 5, "Pantai dengan pasir seperti merica, unik!", "02-12-2024");
+    //             kuta.ulasan.push("Nazril", 4, "Ombak bagus untuk surfing", "30-11-2024");
+    //             kuta.ulasan.push("Habib", 5, "Sunset view spektakuler", "27-11-2024");
+    //             kuta.updateRating();
+    //         }
+    //     }
+    // }
 }
