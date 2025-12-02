@@ -2,7 +2,7 @@ public class GNodeWisata {
     String namaWisata;
     String deskripsi;
     String jenis; // pantai, air terjun, bukit, desa wisata, pulau, dll
-    float rating; // Rata-rata rating dari Stack ulasan
+    double rating; // Rata-rata rating dari Stack ulasan
     
     boolean visited; // Untuk Dijkstra
     float dist; // Distance dari start (untuk Dijkstra)
@@ -63,7 +63,7 @@ public class GNodeWisata {
      */
     public void updateRating() {
         if (ulasan != null && !ulasan.isEmpty()) {
-            this.rating = ulasan.getRataRata();
+            this.rating = ulasan.getAverageRating();
         }
     }
     
@@ -84,7 +84,7 @@ public class GNodeWisata {
     /**
      * Format rating dengan bintang
      */
-    private String formatRating(float rating) {
+    private String formatRating(double rating) {
         String result = "";
         int fullStars = (int) rating;
         for (int i = 0; i < fullStars; i++) {
@@ -131,7 +131,7 @@ public class GNodeWisata {
         this.jenis = jenis;
     }
     
-    public float getRating() {
+    public double getRating() {
         return rating;
     }
     

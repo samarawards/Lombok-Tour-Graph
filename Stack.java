@@ -7,7 +7,7 @@ public class Stack {
         this.size = 0;
     }
 
-    public void push(Ulasan ulasan) {
+    public void push(Ulasan ulasan) { // tambah untuk rating rating
         StackNode newNode = new StackNode(ulasan);
         newNode.next = top;
         top = newNode;
