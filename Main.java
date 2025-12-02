@@ -9,7 +9,7 @@ public class Main {
         System.out.println("█ ██║     ██║   ██║██╔████╔██║██████╔╝██║   ██║█████╔╝  █");
         System.out.println("█ ██║     ██║   ██║██║╚██╔╝██║██╔══██╗██║   ██║██╔═██╗  █");
         System.out.println("█ ███████╗╚██████╔╝██║ ╚═╝ ██║██████╔╝╚██████╔╝██║  ██╗ █");
-        System.out.println("█ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝ █");
+        System.out.println("█ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝  █");
         System.out.println("█ ================= LOMBOK TOUR GRAPH ================  █");
         System.out.println("▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀");
         System.out.println("          Sistem Tour Guide Pulau Lombok");
@@ -86,7 +86,7 @@ public class Main {
     // Display semua wisata dari semua kabupaten (untuk menu 1)
     public static void displaySemuaWisata(GraphKabupaten graph) {
         System.out.println("\n╔════════════════════════════════════════════╗");
-        System.out.println("║     SEMUA WISATA DI PULAU LOMBOK          ║");
+        System.out.println("║     SEMUA WISATA DI PULAU LOMBOK           ║");
         System.out.println("╚════════════════════════════════════════════╝\n");
         
         String[] kabupatenList = {
@@ -115,13 +115,13 @@ public class Main {
         int pilih;
         do {
             System.out.println("\n╔════════════════════════════════════╗");
-            System.out.println("║    LOMBOK TOUR GUIDE SYSTEM       ║");
+            System.out.println("║    LOMBOK TOUR GUIDE SYSTEM        ║");
             System.out.println("╠════════════════════════════════════╣");
-            System.out.println("║ 1. Lihat Semua Wisata             ║");
-            System.out.println("║ 2. Cari Tempat Wisata             ║");
-            System.out.println("║ 3. Antrian                        ║");
-            System.out.println("║ 4. Mulai Tour                     ║");
-            System.out.println("║ 5. Keluar                         ║");
+            System.out.println("║ 1. Lihat Semua Wisata              ║");
+            System.out.println("║ 2. Cari Tempat Wisata              ║");
+            System.out.println("║ 3. Antrian                         ║");
+            System.out.println("║ 4. Mulai Tour                      ║");
+            System.out.println("║ 5. Keluar                          ║");
             System.out.println("╚════════════════════════════════════╝");
             System.out.print("Pilih menu: ");
             pilih = input.nextInt(); 
@@ -139,11 +139,11 @@ public class Main {
             } else if (pilih == 3) {
                 // Menu Antrian
                 System.out.println("\n╔════════════════════════════════════╗");
-                System.out.println("║      ANTRIAN PENGUNJUNG           ║");
+                System.out.println("║      ANTRIAN PENGUNJUNG            ║");
                 System.out.println("╠════════════════════════════════════╣");
-                System.out.println("║ 1. Lihat Antrian                  ║");
-                System.out.println("║ 2. Daftar Antrian                 ║");
-                System.out.println("║ 3. Kembali                        ║");
+                System.out.println("║ 1. Lihat Antrian                   ║");
+                System.out.println("║ 2. Daftar Antrian                  ║");
+                System.out.println("║ 3. Kembali                         ║");
                 System.out.println("╚════════════════════════════════════╝");
                 System.out.print("Pilih: ");
                 int pilihAntri = input.nextInt(); 
@@ -175,8 +175,8 @@ public class Main {
                 
             } else if (pilih == 5) {
                 System.out.println("\n╔════════════════════════════════════╗");
-                System.out.println("║  TERIMA KASIH SUDAH BERKUNJUNG!   ║");
-                System.out.println("║      Sampai jumpa kembali! 👋     ║");
+                System.out.println("║  TERIMA KASIH SUDAH BERKUNJUNG!    ║");
+                System.out.println("║      Sampai jumpa kembali! 👋      ║");
                 System.out.println("╚════════════════════════════════════╝\n");
                 running = false;
                 
