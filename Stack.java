@@ -7,22 +7,29 @@ public class Stack {
         this.size = 0;
     }
 
-    public void push(Ulasan ulasan) { // tambah untuk rating rating
-        StackNode newNode = new StackNode(ulasan);
+    public void push(String nama, int rating, String komentar, String tanggal) {
+        // Validasi rating
+        if (rating < 1 || rating > 5) {
+            System.out.println("❌ Rating harus antara 1-5!");
+            return;
+        }
+        
+        // Buat node baru dengan indeks auto-increment
+        StackNode newNode = new StackNode(nama, rating, komentar, tanggal, size + 1);
         newNode.next = top;
         top = newNode;
         size++;
     }
 
-    public Ulasan pop() {
+    public StackNode pop() {
         if (top == null) {
-            System.out.println("Stack kosong!");
+            System.out.println("❌ Stack kosong!");
             return null;
         }
-        Ulasan data = top.ulasan;
+        StackNode popped = top;
         top = top.next;
         size--;
-        return data;
+        return popped;
     }
 
     public void displayAll() {
@@ -31,16 +38,24 @@ public class Stack {
             return;
         }
         
-        System.out.println("========== Semua Ulasan ==========");
+        System.out.println("\n╔════════════════════════════════════════════╗");
+        System.out.println("║           SEMUA ULASAN (LIFO)             ║");
+        System.out.println("╠════════════════════════════════════════════╣");
+        
         StackNode current = top;
-        int index = 1;
         while (current != null) {
-            System.out.println("Ulasan #" + index);
-            current.ulasan.display();
-            System.out.println("----------------------------------");
+            System.out.print("[" + current.indeks + "] ");
+            for (int i = 0; i < current.rating; i++) {
+                System.out.print("⭐");
+            }
+            System.out.println(" - " + current.namaPengunjung + " (" + current.tanggal + ")");
+            System.out.println("    \"" + current.komentar + "\"");
+            System.out.println();
             current = current.next;
-            index++;
         }
+        
+        System.out.println("╚════════════════════════════════════════════╝");
+        System.out.println("Total: " + size + " ulasan");
     }
 
     public void displayByRating(int minRating) {
@@ -49,21 +64,37 @@ public class Stack {
             return;
         }
         
-        System.out.println("========== Ulasan Rating >= " + minRating + " ==========");
+        if (minRating < 1 || minRating > 5) {
+            System.out.println("❌ Rating harus antara 1-5!");
+            return;
+        }
+        
+        System.out.println("\n╔════════════════════════════════════════════╗");
+        System.out.println("║   ULASAN RATING >= " + minRating + "                     ║");
+        System.out.println("╠════════════════════════════════════════════╣");
+        
         StackNode current = top;
         int count = 0;
         while (current != null) {
-            if (current.ulasan.rating >= minRating) {
-                current.ulasan.display();
-                System.out.println("----------------------------------");
+            if (current.rating >= minRating) {
+                System.out.print("[" + current.indeks + "] ");
+                for (int i = 0; i < current.rating; i++) {
+                    System.out.print("⭐");
+                }
+                System.out.println(" - " + current.namaPengunjung + " (" + current.tanggal + ")");
+                System.out.println("    \"" + current.komentar + "\"");
+                System.out.println();
                 count++;
             }
             current = current.next;
         }
         
         if (count == 0) {
-            System.out.println("Tidak ada ulasan dengan rating >= " + minRating);
+            System.out.println("  Tidak ada ulasan dengan rating >= " + minRating);
         }
+        
+        System.out.println("╚════════════════════════════════════════════╝");
+        System.out.println("Total: " + count + " ulasan");
     }
 
     public double getAverageRating() {
@@ -72,16 +103,14 @@ public class Stack {
         }
         
         int totalRating = 0;
-        int count = 0;
         StackNode current = top;
         
         while (current != null) {
-            totalRating += current.ulasan.rating;
-            count++;
+            totalRating += current.rating;
             current = current.next;
         }
         
-        return (double) totalRating / count;
+        return (double) totalRating / size;
     }
 
     public boolean isEmpty() {
@@ -91,38 +120,10 @@ public class Stack {
     public int getSize() {
         return size;
     }
-}
-
-class Ulasan {
-    String nama;
-    int rating;
-    String komentar;
-    String tanggal;
-    int indeks;
-
-    private static int counter = 1;
-
-    public Ulasan(String nama, int rating, String komentar) {
-        this.nama = nama;
-        this.rating = rating;
-        this.komentar = komentar;
-        this.tanggal = "02/12/2025";
-        this.indeks = counter++;
-    }
-
-    public void display() {
-        String stars = "";
-        for (int i = 0; i < rating; i++) {
-            stars += "*";
-        }
-        for (int i = rating; i < 5; i++) {
-            stars += "-";
-        }
-        
-        System.out.println("Indeks: #" + indeks);
-        System.out.println("Nama: " + nama);
-        System.out.println("Rating: " + stars + " (" + rating + "/5)");
-        System.out.println("Tanggal: " + tanggal);
-        System.out.println("Komentar: " + komentar);
+    
+    public StackNode getTop() {
+        return top;
     }
 }
+
+// tes
