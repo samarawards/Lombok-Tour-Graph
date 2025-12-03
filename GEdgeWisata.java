@@ -29,18 +29,3 @@ public class GEdgeWisata {
         this.next = next;
     }
 }
-
-/**
- * LOMBOK TOUR GRAPH PROJECT
- * 
- * 
- * Description: Edge (koneksi/jalur) antar wisata dalam satu kabupaten.
- *              Menyimpan wisata tujuan, jarak (km), dan pointer ke edge berikutnya.
- * 
- * Dependencies: 
- * - GNodeWisata.java (destination node)
- * 
- * Used by:
- * - GNodeWisata.java (untuk linked list edges)
- * - GraphWisata.java (untuk membuat koneksi)
- */

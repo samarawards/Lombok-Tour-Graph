@@ -223,17 +223,3 @@ public class GraphWisata {
         this.namaKabupaten = namaKabupaten;
     }
 }
-
-/*
-Graph wisata yang nested di dalam setiap NodeKabupaten.
-Menyimpan semua tempat wisata dalam satu kabupaten beserta jalurnya.
-Terintegrasi dengan Dijkstra untuk shortest path.
-Tersambung pada: 
-- GNodeWisata.java
-- GEdgeWisata.java
-- PathResult.java (untuk hasil Dijkstra)
-
-Dipakai di:
-- GNodeKabupaten.java (nested graph)
-- Main.java (untuk proses tour)
-*/

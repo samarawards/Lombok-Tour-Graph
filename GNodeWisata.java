@@ -40,36 +40,24 @@ public class GNodeWisata {
         this.ulasan = new Stack();
     }
 
-    /**
-     * Tambah edge ke wisata lain
-     */
     public void addEdgeWisata(GNodeWisata to, float weight) {
         GEdgeWisata newEdge = new GEdgeWisata(this, to, weight);
         newEdge.next = firstEdgeWis;
         firstEdgeWis = newEdge;
     }
     
-    /**
-     * Reset field Dijkstra untuk pathfinding baru
-     */
     public void resetDijkstra() {
         this.visited = false;
         this.dist = Float.MAX_VALUE;
         this.prev = null;
     }
     
-    /**
-     * Update rating dari rata-rata Stack ulasan
-     */
     public void updateRating() {
         if (ulasan != null && !ulasan.isEmpty()) {
             this.rating = ulasan.getAverageRating();
         }
     }
     
-    /**
-     * Tampilkan info wisata
-     */
     public void displayInfo() {
         System.out.println("╔════════════════════════════════════════════╗");
         System.out.println("║           DETAIL WISATA                    ║");
@@ -81,9 +69,6 @@ public class GNodeWisata {
         System.out.println("╚════════════════════════════════════════════╝");
     }
     
-    /**
-     * Format rating dengan bintang
-     */
     private String formatRating(double rating) {
         String result = "";
         int fullStars = (int) rating;
@@ -94,9 +79,6 @@ public class GNodeWisata {
         return result;
     }
     
-    /**
-     * Tampilkan semua koneksi (edges) wisata ini
-     */
     public void displayEdges() {
         System.out.println("\nKoneksi dari " + namaWisata + ":");
         GEdgeWisata current = firstEdgeWis;
@@ -110,7 +92,6 @@ public class GNodeWisata {
         }
     }
     
-    // Getter & Setter
     public String getNamaWisata() {
         return namaWisata;
     }
@@ -175,17 +156,3 @@ public class GNodeWisata {
         this.prev = prev;
     }
 }
-
-/*
-Node untuk merepresentasikan tempat wisata dalam graph.
-Setiap node punya nested Stack untuk ulasan pengunjung.
-
-Tersambung di: 
-- GEdgeWisata.java (untuk linked list edges)
-- Stack.java (nested stack ulasan)
-
-Dipakai di:
-- GraphWisata.java
-- SearchEngine.java
-- SortingManager.java
-*/
