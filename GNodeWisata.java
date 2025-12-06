@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 public class GNodeWisata {
     String namaWisata;
     String deskripsi;
@@ -69,7 +71,7 @@ public class GNodeWisata {
         System.out.println("╚════════════════════════════════════════════╝");
     }
     
-    private String formatRating(double rating) {
+    public String formatRating(double rating) {
         String result = "";
         int fullStars = (int) rating;
         for (int i = 0; i < fullStars; i++) {

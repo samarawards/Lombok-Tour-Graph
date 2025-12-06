@@ -31,6 +31,14 @@ public class GNodeKabupaten {
         this.jarakDariStart = Float.MAX_VALUE;
         this.prev = null;
     }
+
+    public void displayWisata (){
+        GNodeWisata temp = graphWisata.firstWisata;
+        while (temp != null) {
+            temp.displayInfo();
+            temp = temp.next;
+        }
+    }
     
     // Getter & Setter
     public String getNamaKabupaten() {

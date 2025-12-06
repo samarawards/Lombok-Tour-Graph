@@ -1,6 +1,5 @@
 public class SearchEngine {
-    LinkedList hasil = new LinkedList();
-    
+  
     // ==================== SEARCH WISATA ====================
     
     /**
@@ -11,24 +10,29 @@ public class SearchEngine {
      */
     public GNodeWisata searchByNama(GraphKabupaten graph, String keyword) {
         // Implement linear search
+        graph.resetGraph();
         GNodeKabupaten tempKab = graph.firstKab;
-        while ((!tempKab.visited) && tempKab != null) {
-            tempKab.visited = true;
-            GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
-            if (!tempWis.visited) {
-                tempWis.visited = true;
-                if (tempWis.namaWisata.equalsIgnoreCase(keyword)) {
-                    return tempWis;
-                }else{
+        while (tempKab != null) {
+            tempKab.graphWisata.resetGraph();
+            tempKab = tempKab.next;
+        }
+        tempKab = graph.firstKab;
+        while (tempKab != null) {
+            while ((!tempKab.visited)) {
+                tempKab.visited = true;
+                GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
+                while (tempWis != null) {
+                    while (!tempWis.visited) {
+                        tempWis.visited = true;
+                        if (tempWis.namaWisata.equalsIgnoreCase(keyword)) {
+                            return tempWis;
+                        }
+                    }
                     tempWis = tempWis.next;
                 }
             }
             tempKab = tempKab.next;
         }
-        // 1. Loop semua kabupaten
-        // 2. Loop semua wisata dalam setiap kabupaten
-        // 3. Jika nama.contains(keyword) → tambah ke hasil LinkedList
-        // 4. Return head hasil
         return null;
     }
     
@@ -38,34 +42,46 @@ public class SearchEngine {
      * Jenis wisata
      *  Head LinkedList wisata yang cocok
      */
-    public GNodeWisata searchByJenis(GraphKabupaten graph, String jenis) {
+    public void searchByJenis(GraphKabupaten graph, String jenis) {
         // Implement linear search
         // 1. Loop semua kabupaten
         // 2. Loop semua wisata dalam setiap kabupaten
         // 3. Jika wisata.jenis.equals(jenis) → tambah ke hasil
         // 4. Return head hasil
+        int num = 1;
+        graph.resetGraph();
         GNodeKabupaten tempKab = graph.firstKab;
-        while (!tempKab.visited && tempKab != null) {
-            tempKab.visited = true;
-            GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
-            while (!tempWis.visited) {
-                if (tempWis.jenis.equalsIgnoreCase(jenis)) {
-                    hasil.addTail(tempWis); //ini perlu di disconnect dulu ga sama node aslinya?
-                }else{
+        while (tempKab != null) {
+            tempKab.graphWisata.resetGraph();
+            tempKab = tempKab.next;
+        }
+        tempKab = graph.firstKab;
+        while (tempKab != null) {
+            while (!tempKab.visited) {
+                tempKab.visited = true;
+                GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
+                while (tempWis != null) {
+                    while (!tempWis.visited) {
+                        tempWis.visited = true;
+                        if (tempWis.jenis.equalsIgnoreCase(jenis)) {
+                            // tempWis.displayInfo();//ini atau
+                            System.out.println(num + ". " + tempWis.namaWisata ); //+ " (" + tempWis.deskripsi + ")" ->kalau mau lebih detail
+                            num++;
+                        }
+                    }
                     tempWis = tempWis.next;
                 }
             }
-        }
-        if (hasil.head != null) {
-            GNodeWisata tempHasil = 
+            tempKab = tempKab.next;
         }
     }
     
-    public GNodeWisata searchByRating(GraphKabupaten graph, float minRating) {
-        GNodeWisata resultHead = null;
-        GNodeWisata resultTail = null;
+    public void searchByRating(GraphKabupaten graph, float minRating) {
+        // GNodeWisata resultHead = null;
+        // GNodeWisata resultTail = null;
         
         // Loop semua kabupaten
+        int num = 1;
         GNodeKabupaten currentKab = graph.getFirstKab();
         
         while (currentKab != null) {
@@ -75,22 +91,9 @@ public class SearchEngine {
             while (currentWis != null) {
                 // Check rating
                 if (currentWis.rating >= minRating) {
-                    // Clone node
-                    GNodeWisata clone = new GNodeWisata(
-                        currentWis.namaWisata,
-                        currentWis.deskripsi,
-                        currentWis.jenis
-                    );
-                    clone.rating = currentWis.rating;
-                    
-                    // Add ke result list
-                    if (resultHead == null) {
-                        resultHead = clone;
-                        resultTail = clone;
-                    } else {
-                        resultTail.setNext(clone);
-                        resultTail = clone;
-                    }
+                    // currentWis.displayInfo();
+                    System.out.println(num + ". " + currentWis.namaWisata + " (" + currentWis.formatRating(currentWis.rating) + ")"); //+ " (" + tempWis.deskripsi + ")" ->kalau mau lebih detail
+                    num++;
                 }
                 
                 currentWis = currentWis.getNext();
@@ -99,43 +102,31 @@ public class SearchEngine {
             currentKab = currentKab.getNext();
         }
         
-        return resultHead;
+        return;
     }
     
 
-    public GNodeWisata searchByKabupaten(GraphKabupaten graph, String namaKabupaten) {
+    public void searchByKabupaten(GraphKabupaten graph, String namaKabupaten) {
         GNodeKabupaten kab = graph.getNode(namaKabupaten);
-        
-        if (kab == null) {
-            return null;
+        if (namaKabupaten.equalsIgnoreCase("lombok barat")) {
+            for (int i = 1; i <= 3; i++) {
+                System.out.println("\n" + namaKabupaten + " " + i);
+                searchByKabupaten(graph, namaKabupaten + " " + i);
+            } return;
+            
+        }else if (kab == null) {
+            System.out.println("Tidak ada kabupaten bernama " + namaKabupaten + " di Pulau Lombok");
+            return;
         }
-        
-        // Clone semua wisata dalam kabupaten
-        GNodeWisata resultHead = null;
-        GNodeWisata resultTail = null;
-        
+        int num = 1;
         GNodeWisata currentWis = kab.graphWisata.getFirstWisata();
-        
         while (currentWis != null) {
-            GNodeWisata clone = new GNodeWisata(
-                currentWis.namaWisata,
-                currentWis.deskripsi,
-                currentWis.jenis
-            );
-            clone.rating = currentWis.rating;
-            
-            if (resultHead == null) {
-                resultHead = clone;
-                resultTail = clone;
-            } else {
-                resultTail.setNext(clone);
-                resultTail = clone;
-            }
-            
-            currentWis = currentWis.getNext();
+            System.out.println(num + ". " + currentWis.namaWisata);
+            num++;
+            currentWis = currentWis.next;
         }
         
-        return resultHead;
+        return;
     }
     
     // cari node wisata

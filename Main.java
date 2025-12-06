@@ -104,13 +104,14 @@ public class Main {
             }
         }
     }
-
+    
     public static void main(String[] args) {
         printHeader();
         
         // Initialize data
         GraphKabupaten graph = loadData();
         Queue queue = new Queue();
+        SearchEngine search = new SearchEngine();
         
         Scanner input = new Scanner(System.in);
         boolean running = true;
@@ -135,7 +136,6 @@ public class Main {
                 displaySemuaWisata(graph);
                 
             } else if (pilih == 2) {
-                SearchEngine search = new SearchEngine();
                 // Search wisata (Anggota 5 - SearchEngine)
                 System.out.println("\n╔═══════════════════════════════════════════════════════╗");
                 System.out.println("║           CARI TEMPAT WISATA BERDASARKAN              ║");
@@ -150,22 +150,84 @@ public class Main {
                 int pilihCari = input.nextInt(); 
                 input.nextLine();
 
+                String cari;
                 switch (pilihCari) {
                     case 1:
                         System.out.println("\n╔═══════════════════════════════════════════════════════╗");
                         System.out.print("Cari tempat wisata berdasarkan nama: ");
+                        cari = input.nextLine();
                         System.out.println("╠═══════════════════════════════════════════════════════╣");
-                        String cari = input.nextLine();
                         GNodeWisata inidia = search.searchByNama(graph, cari);
                         if (inidia != null) {
                             inidia.displayInfo();
+                            System.out.print("See Comments...(Y/N)");
+                            cari = input.nextLine();
+                            if (cari == "Y" || cari == "y" ) {
+                                //DISPLAY KOMEN UNTUK WISATA YANG DICARI => inidia
+                                System.out.println("\n╔════════════════════════════════════════════╗");
+                                System.out.println("║           SORT ULASAN BERDASARKAN          ║");
+                                System.out.println("╠════════════════════════════════════════════╣");
+                                System.out.println("║1. Rating Tertinggi → Terendah              ║");
+                                System.out.println("║2. Rating Terendah → Tertinggi              ║");
+                                System.out.println("║3. Komentar Pertama → Terakhir              ║");
+                                System.out.println("║4. Komentar Terakhir → Pertama              ║");
+                                System.out.println("║5. Kembali                                  ║");
+                                System.out.println("╚════════════════════════════════════════════╝");
+                                System.out.print("pilihan: ");
+                                int pilihSort = input.nextInt(); input.nextLine();
+                                switch (pilihSort) {
+                                    case 1:
+                                        //Rating Tertinggi ke terendah
+                                        break;
+                                    case 2:
+                                        //Rating Terendah → Tertinggi
+                                        break;
+                                    case 3:
+                                        //Komentar Pertama → Terakhir
+                                        break;
+                                    case 4:
+                                        //Komentar Terakhir → Pertama
+                                        break;
+                                    case 5:
+                                        break;
+                                    default:
+                                        System.out.println("❌ Pilihan tidak valid");
+                                        break;
+                                }
+ 
+                            }
                         }else{
                             System.out.println("Wisata " + cari + " belum terdaftar dalam sistem.");
                         }
                         System.out.println("╚═══════════════════════════════════════════════════════╝");
                         break;
-                
+                    case 2:
+                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.print("Cari tempat wisata berdasarkan jenis: ");
+                        cari = input.nextLine();
+                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        search.searchByJenis(graph, cari);
+                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        break;
+                    case 3:
+                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.print("Cari tempat wisata dengan rating minimal: ");
+                        float rate = input.nextFloat(); input.nextLine();
+                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        search.searchByRating(graph, rate);
+                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        break;
+                    case 4:
+                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.print("Cari tempat wisata di dalam kabupaten: ");
+                        cari = input.nextLine();
+                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        search.searchByKabupaten(graph, cari);
+                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        break;
+                    case 5: break;
                     default:
+                        System.out.println("❌ Pilihan tidak valid");
                         break;
                 }
                 
@@ -203,8 +265,64 @@ public class Main {
                 
             } else if (pilih == 4) {
                 // Mulai tour (Integrasi semua modul)
-                System.out.println("\n  Fitur tour belum diimplementasi.");
-                System.out.println("    (Akan dikerjakan setelah semua modul selesai)");
+                GNodeWisata tujuan;
+                GNodeKabupaten start = graph.firstKab; //ini harusnya mataram sih
+                queue.displayQueue();
+                QueueNode orang = queue.dequeue();
+                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                System.out.println("║             SELAMAT DATANG " + orang.pengunjung + "            ║");
+                System.out.println("║                 Lokasi: Kantor Tour Mataram           ║");
+                System.out.println("╚═══════════════════════════════════════════════════════╝\n");
+                do {
+                    System.out.println("[admin] : Mau kemana hari ini?");
+                    System.out.print("["+ orang.pengunjung +"] : "); 
+                    String t = input.nextLine();
+                    tujuan = search.searchByNama(graph, t);
+                    if (tujuan != null) {
+                        break;
+                    }else System.out.println("Maaf, tujuan yang anda cari belum terdaftar dalam sistem.");
+                } while (tujuan == null);
+                int pilihperjalanan;
+                do {
+                    //MULAI PERJALANAN DJIKSTRA & PRINT HASIL DJIKSTRA (yang dilewatin)
+                    System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                    System.out.println(" PERJALANAN DARI " + start.namaKabupaten +" MENUJU "+ tujuan.namaWisata);
+                    System.out.println("╠═══════════════════════════════════════════════════════╣");
+                    System.out.println("\n  JALANKAN DJIKSTRA DISINI");
+                    System.out.println("    DAN DISINI");
+                    System.out.println("╠═══════════════════════════════════════════════════════╣");
+                    System.out.println("║                 LANGKAH SELANJUTNYA                   ║");
+                    System.out.println("╠═══════════════════════════════════════════════════════╣");
+                    System.out.println("║1. Melanjutkan perjalanan menuju tujuan baru           ║"); //kalau dia pilih ini antara dia looping atau rekursif, ntahlah
+                    System.out.println("║2. Selesaikan perjalanan                               ║");
+                    System.out.println("╠═══════════════════════════════════════════════════════╣");
+                    do {
+                        System.out.print(" Pilihan: "); 
+                        pilihperjalanan = input.nextInt(); input.nextLine();
+                        
+                        switch (pilihperjalanan) {
+                            case 1:
+                                do {
+                                    System.out.println("[admin] : Mau melanjutkan perjalanan kemana?");
+                                    System.out.print("["+ orang.pengunjung +"] : "); 
+                                    String t = input.nextLine();
+                                    tujuan = search.searchByNama(graph, t); //ini tujuannya diperbarahui, tapi startnya belum diperbaharui
+                                    if (tujuan != null) {
+                                        break;
+                                    }else System.out.println("Maaf, tujuan yang anda cari belum terdaftar dalam sistem.");
+                                } while (tujuan == null);
+                                break;
+                                
+                            case 2:
+                                //INI BUAT MENU UNTUK MEMBERIKAN ULASAN ATAU TIDAK, KALAU IYA KELUARKAN SEMUA TEMPAT YANG MASUK LINKED LISTNYA
+                                //ORANG ITU SATU PERSATU TERUS MINTA INPUT RATING DAN KOMENTAR UNTUK SETIAP TEMPAT YANG DIKUNJUNGI
+                                break;
+                            default:
+                                System.out.println("❌ Pilihan tidak valid");
+                                break;
+                        }
+                    } while (pilihperjalanan != 1 || pilihperjalanan != 2);
+                } while (pilihperjalanan == 1);
                 
             } else if (pilih == 5) {
                 System.out.println("\n╔═══════════════════════════════════════════════════════╗");
