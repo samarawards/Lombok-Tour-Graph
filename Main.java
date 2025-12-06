@@ -12,9 +12,15 @@ public class Main {
         System.out.println("█ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝  █");
         System.out.println("█ ================= LOMBOK TOUR GRAPH ================  █");
         System.out.println("▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀");
-        System.out.println("          Sistem Tour Guide Pulau Lombok");
-        System.out.println("       dengan Nested Graph & Dijkstra Algorithm");
-        System.out.println("═══════════════════════════════════════════════════════════\n");
+        System.out.println("╔═══════════════════════════════════════════════════════╗");
+        System.out.println("║                 LOMBOK TOUR GRAPH SYSTEM              ║");
+        System.out.println("╠═══════════════════════════════════════════════════════╣");
+        System.out.println("║     Explore Lombok's beauty through connected nodes   ║");
+        System.out.println("║         and intelligent route calculations.           ║");
+        System.out.println("╚═══════════════════════════════════════════════════════╝");
+    //     System.out.println("          Sistem Tour Guide Pulau Lombok");
+    //     System.out.println("       dengan Nested Graph & Dijkstra Algorithm");
+    //     System.out.println("═══════════════════════════════════════════════════════════\n");
     }
     
     // Load semua data Lombok (kabupaten + wisata)
@@ -85,9 +91,9 @@ public class Main {
     
     // Display semua wisata dari semua kabupaten (untuk menu 1)
     public static void displaySemuaWisata(GraphKabupaten graph) {
-        System.out.println("\n╔════════════════════════════════════════════╗");
-        System.out.println("║     SEMUA WISATA DI PULAU LOMBOK           ║");
-        System.out.println("╚════════════════════════════════════════════╝\n");
+        System.out.println("\n╔════════════════════════════════════════════════════════╗");
+        System.out.println("║               SEMUA WISATA DI PULAU LOMBOK             ║");
+        System.out.println("╚════════════════════════════════════════════════════════╝");
         
         String[] kabupatenList = {
             "Lombok Barat 1", "Lombok Barat 2", "Lombok Barat 3",
@@ -114,15 +120,15 @@ public class Main {
 
         int pilih;
         do {
-            System.out.println("\n╔════════════════════════════════════╗");
-            System.out.println("║    LOMBOK TOUR GUIDE SYSTEM        ║");
-            System.out.println("╠════════════════════════════════════╣");
-            System.out.println("║ 1. Lihat Semua Wisata              ║");
-            System.out.println("║ 2. Cari Tempat Wisata              ║");
-            System.out.println("║ 3. Antrian                         ║");
-            System.out.println("║ 4. Mulai Tour                      ║");
-            System.out.println("║ 5. Keluar                          ║");
-            System.out.println("╚════════════════════════════════════╝");
+            System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+            System.out.println("║               LOMBOK TOUR GUIDE SYSTEM                ║");
+            System.out.println("╠═══════════════════════════════════════════════════════╣");
+            System.out.println("║ 1. Lihat Semua Wisata                                 ║");
+            System.out.println("║ 2. Cari Tempat Wisata                                 ║");
+            System.out.println("║ 3. Antrian                                            ║");
+            System.out.println("║ 4. Mulai Tour                                         ║");
+            System.out.println("║ 5. Keluar                                             ║");
+            System.out.println("╚═══════════════════════════════════════════════════════╝");
             System.out.print("Pilih menu: ");
             pilih = input.nextInt(); 
             input.nextLine();
@@ -138,13 +144,13 @@ public class Main {
                 
             } else if (pilih == 3) {
                 // Menu Antrian
-                System.out.println("\n╔════════════════════════════════════╗");
-                System.out.println("║      ANTRIAN PENGUNJUNG            ║");
-                System.out.println("╠════════════════════════════════════╣");
-                System.out.println("║ 1. Lihat Antrian                   ║");
-                System.out.println("║ 2. Daftar Antrian                  ║");
-                System.out.println("║ 3. Kembali                         ║");
-                System.out.println("╚════════════════════════════════════╝");
+                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                System.out.println("║                   ANTRIAN PENGUNJUNG                  ║");
+                System.out.println("╠═══════════════════════════════════════════════════════╣");
+                System.out.println("║ 1. Lihat Antrian                                      ║");
+                System.out.println("║ 2. Daftar Antrian                                     ║");
+                System.out.println("║ 3. Kembali                                            ║");
+                System.out.println("╚═══════════════════════════════════════════════════════╝");
                 System.out.print("Pilih: ");
                 int pilihAntri = input.nextInt(); 
                 input.nextLine();
@@ -174,10 +180,10 @@ public class Main {
                 System.out.println("    (Akan dikerjakan setelah semua modul selesai)");
                 
             } else if (pilih == 5) {
-                System.out.println("\n╔════════════════════════════════════╗");
-                System.out.println("║  TERIMA KASIH SUDAH BERKUNJUNG!    ║");
-                System.out.println("║      Sampai jumpa kembali! 👋      ║");
-                System.out.println("╚════════════════════════════════════╝\n");
+                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                System.out.println("║             TERIMA KASIH SUDAH BERKUNJUNG!            ║");
+                System.out.println("║                 Sampai jumpa kembali!                 ║");
+                System.out.println("╚═══════════════════════════════════════════════════════╝\n");
                 running = false;
                 
             } else {

@@ -13,7 +13,7 @@ public class GNodeKabupaten {
 
     public GNodeKabupaten(String nama) {
         this.namaKabupaten = nama;
-        this.graphWisata = new GraphWisata(); 
+        this.graphWisata = new GraphWisata(nama); 
         this.visited = false;
     }
 
