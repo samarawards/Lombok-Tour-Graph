@@ -79,19 +79,6 @@ public class GNodeWisata {
         return result;
     }
     
-    public void displayEdges() {
-        System.out.println("\nKoneksi dari " + namaWisata + ":");
-        GEdgeWisata current = firstEdgeWis;
-        if (current == null) {
-            System.out.println("  Tidak ada koneksi.");
-            return;
-        }
-        while (current != null) {
-            System.out.println("  → " + current.toWisata.namaWisata + " (" + current.weight + " km)");
-            current = current.next;
-        }
-    }
-    
     public String getNamaWisata() {
         return namaWisata;
     }

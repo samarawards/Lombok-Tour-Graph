@@ -1,4 +1,5 @@
 public class SearchEngine {
+    LinkedList hasil = new LinkedList();
     
     // ==================== SEARCH WISATA ====================
     
@@ -8,8 +9,22 @@ public class SearchEngine {
      *  Kata kunci pencarian (case insensitive)
      *  Head LinkedList wisata yang cocok (atau null jika tidak ada)
      */
-    public static GNodeWisata searchByNama(GraphKabupaten graph, String keyword) {
+    public GNodeWisata searchByNama(GraphKabupaten graph, String keyword) {
         // Implement linear search
+        GNodeKabupaten tempKab = graph.firstKab;
+        while ((!tempKab.visited) && tempKab != null) {
+            tempKab.visited = true;
+            GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
+            if (!tempWis.visited) {
+                tempWis.visited = true;
+                if (tempWis.namaWisata.equalsIgnoreCase(keyword)) {
+                    return tempWis;
+                }else{
+                    tempWis = tempWis.next;
+                }
+            }
+            tempKab = tempKab.next;
+        }
         // 1. Loop semua kabupaten
         // 2. Loop semua wisata dalam setiap kabupaten
         // 3. Jika nama.contains(keyword) → tambah ke hasil LinkedList
@@ -23,125 +38,208 @@ public class SearchEngine {
      * Jenis wisata
      *  Head LinkedList wisata yang cocok
      */
-    public static GNodeWisata searchByJenis(GraphKabupaten graph, String jenis) {
+    public GNodeWisata searchByJenis(GraphKabupaten graph, String jenis) {
         // Implement linear search
         // 1. Loop semua kabupaten
         // 2. Loop semua wisata dalam setiap kabupaten
         // 3. Jika wisata.jenis.equals(jenis) → tambah ke hasil
         // 4. Return head hasil
+        GNodeKabupaten tempKab = graph.firstKab;
+        while (!tempKab.visited && tempKab != null) {
+            tempKab.visited = true;
+            GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
+            while (!tempWis.visited) {
+                if (tempWis.jenis.equalsIgnoreCase(jenis)) {
+                    hasil.addTail(tempWis); //ini perlu di disconnect dulu ga sama node aslinya?
+                }else{
+                    tempWis = tempWis.next;
+                }
+            }
+        }
+        if (hasil.head != null) {
+            GNodeWisata tempHasil = 
+        }
+    }
+    
+    public GNodeWisata searchByRating(GraphKabupaten graph, float minRating) {
+        GNodeWisata resultHead = null;
+        GNodeWisata resultTail = null;
+        
+        // Loop semua kabupaten
+        GNodeKabupaten currentKab = graph.getFirstKab();
+        
+        while (currentKab != null) {
+            // Loop semua wisata dalam kabupaten ini
+            GNodeWisata currentWis = currentKab.graphWisata.getFirstWisata();
+            
+            while (currentWis != null) {
+                // Check rating
+                if (currentWis.rating >= minRating) {
+                    // Clone node
+                    GNodeWisata clone = new GNodeWisata(
+                        currentWis.namaWisata,
+                        currentWis.deskripsi,
+                        currentWis.jenis
+                    );
+                    clone.rating = currentWis.rating;
+                    
+                    // Add ke result list
+                    if (resultHead == null) {
+                        resultHead = clone;
+                        resultTail = clone;
+                    } else {
+                        resultTail.setNext(clone);
+                        resultTail = clone;
+                    }
+                }
+                
+                currentWis = currentWis.getNext();
+            }
+            
+            currentKab = currentKab.getNext();
+        }
+        
+        return resultHead;
+    }
+    
+
+    public GNodeWisata searchByKabupaten(GraphKabupaten graph, String namaKabupaten) {
+        GNodeKabupaten kab = graph.getNode(namaKabupaten);
+        
+        if (kab == null) {
+            return null;
+        }
+        
+        // Clone semua wisata dalam kabupaten
+        GNodeWisata resultHead = null;
+        GNodeWisata resultTail = null;
+        
+        GNodeWisata currentWis = kab.graphWisata.getFirstWisata();
+        
+        while (currentWis != null) {
+            GNodeWisata clone = new GNodeWisata(
+                currentWis.namaWisata,
+                currentWis.deskripsi,
+                currentWis.jenis
+            );
+            clone.rating = currentWis.rating;
+            
+            if (resultHead == null) {
+                resultHead = clone;
+                resultTail = clone;
+            } else {
+                resultTail.setNext(clone);
+                resultTail = clone;
+            }
+            
+            currentWis = currentWis.getNext();
+        }
+        
+        return resultHead;
+    }
+    
+    // cari node wisata
+    public GNodeWisata findWisataExact(GraphKabupaten graph, String namaWisata) {
+        GNodeKabupaten currentKab = graph.getFirstKab();
+
+        while(currentKab != null){
+            GNodeWisata found = currentKab.graphWisata.getNode(namaWisata);
+            if(found != null){
+                return found;
+            }
+            currentKab = currentKab.getNext();
+        }
         return null;
     }
     
-    /**
-     * Cari wisata by rating minimal
-     * Graph kabupaten utama
-     * \Rating minimal (contoh: 4.0)
-     *  Head LinkedList wisata dengan rating >= minRating
-     */
-    public static GNodeWisata searchByRating(GraphKabupaten graph, float minRating) {
-        // Implement linear search
-        // 1. Loop semua kabupaten
-        // 2. Loop semua wisata dalam setiap kabupaten
-        // 3. Jika wisata.rating >= minRating → tambah ke hasil
-        // 4. Return head hasil
+
+    // return nama kabupaten dari wisata
+    public String getKabupatenWisata(GraphKabupaten graph, String namaWisata){
+        GNodeKabupaten currentKab = graph.getFirstKab();
+
+        while(currentKab != null){
+            GNodeWisata found = currentKab.graphWisata.getNode(namaWisata);
+            if(found != null){
+                return currentKab.namaKabupaten;
+            }
+
+            currentKab = currentKab.getNext();
+        }
         return null;
     }
-    
-    /**
-     * Cari semua wisata dalam kabupaten tertentu
-     * Graph kabupaten utama
-     * Nama kabupaten
-     *  Head LinkedList wisata dalam kabupaten tersebut
-     */
-    public static GNodeWisata searchByKabupaten(GraphKabupaten graph, String namaKabupaten) {
-        // Implement
-        // 1. Cari NodeKabupaten by nama
-        // 2. Return graphWisata.firstWisata
-        return null;
-    }
-    
-    /**
-     * Cari wisata spesifik by nama EXACT (untuk Dijkstra)
-     * Graph kabupaten utama
-     * Nama wisata EXACT
-     *  NodeWisata yang dicari (atau null jika tidak ada)
-     */
-    public static GNodeWisata findWisataExact(GraphKabupaten graph, String namaWisata) {
-        // Implement
-        // 1. Loop semua kabupaten
-        // 2. Loop semua wisata dalam setiap kabupaten
-        // 3. Jika nama.equals(namaWisata) → return node
-        // 4. Return null jika tidak ditemukan
-        return null;
-    }
-    
-    // ==================== HELPER METHODS ====================
-    
-    /**
-     * Display hasil search (LinkedList wisata)
-     * Head dari hasil search
-     */
-    public static void displayHasilSearch(GNodeWisata head) {
-        // Implement
-        // Loop & print: nama, kabupaten, jenis, rating
+
+    public void displayHasilSearch(GNodeWisata head, GraphKabupaten graph) {
         if (head == null) {
-            System.out.println("Tidak ada wisata yang ditemukan.");
+            System.out.println("\n❌ Tidak ada wisata yang ditemukan.");
             return;
         }
         
-        System.out.println("========== HASIL PENCARIAN ==========");
-        // Loop & display
-        System.out.println("=====================================");
+        System.out.println("\n╔════════════════════════════════════════════════════════╗");
+        System.out.println("║               HASIL PENCARIAN WISATA                   ║");
+        System.out.println("╠════════════════════════════════════════════════════════╣");
+        
+        GNodeWisata current = head;
+        int num = 1;
+        
+        while (current != null) {
+            // Cari kabupaten wisata ini
+            String kabupaten = getKabupatenWisata(graph, current.namaWisata);
+            
+            System.out.print("  " + num + ". " + current.namaWisata);
+            System.out.print(" (" + current.jenis + ")");
+            
+            if (current.rating > 0) {
+                System.out.print(" ");
+                int fullStars = (int) current.rating;
+                for (int i = 0; i < fullStars; i++) {
+                    System.out.print("* ");
+                }
+                System.out.print(" " + current.rating);
+            }
+            
+            if (kabupaten != null) {
+                System.out.println(" - " + kabupaten);
+            } else {
+                System.out.println();
+            }
+            
+            current = current.getNext();
+            num++;
+        }
+        
+        System.out.println("╚════════════════════════════════════════════════════════╝");
+        System.out.println("Total: " + countResults(head) + " wisata ditemukan");
     }
     
-    /**
-     * Tambah node wisata ke hasil LinkedList (clone node, bukan referensi!)
-     * Head hasil LinkedList
-     * Node wisata yang mau ditambah
-     *  Head baru (jika head null)
-     */
-    private static GNodeWisata addToResult(GNodeWisata head, GNodeWisata wisata) {
-        // Implement
-        // 1. Clone data wisata (JANGAN reference langsung!)
-        // 2. Add ke tail LinkedList hasil
-        // 3. Return head
-        return null;
+    public int countResults(GNodeWisata head) {
+        int count = 0;
+        GNodeWisata current = head;
+        
+        while (current != null) {
+            count++;
+            current = current.getNext();
+        }
+        
+        return count;
     }
-    
-    /**
-     * Hitung jumlah hasil search
-     * Head LinkedList hasil
-     *  Jumlah wisata
-     */
-    public static int countResults(GNodeWisata head) {
-        // Implement
-        // Loop count sampai null
-        return 0;
+
+    public void displayJenisWisata(GraphKabupaten graph) {
+        System.out.println("\n╔════════════════════════════════════════════════════════╗");
+        System.out.println("║            KATEGORI WISATA YANG TERSEDIA               ║");
+        System.out.println("╠════════════════════════════════════════════════════════╣");
+        System.out.println("  1. Pantai");
+        System.out.println("  2. Air Terjun");
+        System.out.println("  3. Bukit");
+        System.out.println("  4. Pulau");
+        System.out.println("  5. Desa Wisata");
+        System.out.println("  6. Taman");
+        System.out.println("  7. Gunung");
+        System.out.println("  8. Savana");
+        System.out.println("  9. Hutan Wisata");
+        System.out.println("  10. Sirkuit");
+        System.out.println("  11. Kebun Wisata");
+        System.out.println("  12. Kolam Renang");
+        System.out.println("  13. Pemandian");
+        System.out.println("╚════════════════════════════════════════════════════════╝");
     }
 }
-
-/* Masih butuh method:
-public static GNodeWisata searchMultiCriteria(GraphKabupaten graph, String keyword, String jenis, float minRating) - search kombinasi (optional)
-public static String getKabupatenWisata(GraphKabupaten graph, String namaWisata) - return kabupaten dari wisata tertentu (untuk Dijkstra)
-*/
-
-/*
-SEARCH METHODS:
-
-✅ searchByNama(GraphKabupaten, String) - Cari by nama/keyword
-✅ searchByJenis(GraphKabupaten, String) - Cari by jenis (pantai/air terjun/dll)
-✅ searchByRating(GraphKabupaten, float) - Cari by rating minimal
-✅ searchByKabupaten(GraphKabupaten, String) - Cari semua wisata di kabupaten
-✅ findWisataExact(GraphKabupaten, String) - Cari wisata EXACT (untuk Dijkstra)
-
-HELPER METHODS:
-
-⚠️ displayHasilSearch(GNodeWisata) - Display hasil search
-⚠️ addToResult(GNodeWisata, GNodeWisata) - Tambah node ke hasil (clone data!)
-⚠️ countResults(GNodeWisata) - Hitung jumlah hasil
-
-OPTIONAL:
-
-🆕 searchMultiCriteria(...) - Search kombinasi (nama + jenis + rating)
-🆕 getKabupatenWisata(GraphKabupaten, String) - Return nama kabupaten dari wisata
-*/

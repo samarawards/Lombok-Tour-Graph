@@ -1,33 +1,66 @@
 public class Queue {
-    QueueNode fisrt;
+    QueueNode first;
     QueueNode last;
-    QueueNode temp;
+    int size;
 
-    public void enqueue(String pengunjung){
-        QueueNode newPengunjung = new QueueNode(pengunjung);
-        if (fisrt == null) {
-            fisrt = newPengunjung;
-        }else{
-            last.next = newPengunjung;
-        }      
-        last = newPengunjung;
+    public Queue() {
+        this.first = null;
+        this.last = null;
+        this.size = 0;
     }
 
-    public QueueNode dequeue(){
-        if (fisrt == null) return null;
-        temp = fisrt;
-        fisrt = fisrt.next;
-        temp.next = null;
+    public void enqueue(String pengunjung) {
+        QueueNode newPengunjung = new QueueNode(pengunjung);
+        if (first == null) {
+            first = newPengunjung;
+            last = newPengunjung;
+        } else {
+            last.next = newPengunjung;
+            last = newPengunjung;
+        }
+        size++;
+    }
+
+    public QueueNode dequeue() {
+        if (first == null) {
+            System.out.println("❌ Antrian kosong!");
+            return null;
+        }
+        
+        QueueNode temp = first;
+        first = first.next;
+        
+        if (first == null) {
+            last = null; 
+        }
+        
+        temp.next = null; 
+        size--;
         return temp;
     }
-    public void displayQueue(){
-        temp = fisrt;
-        System.out.println("============= Antrian Lombok Tour Graph =============");
-        while (temp != null) {
-            int num = 1;
-            System.out.println(num + ". " + temp.pengunjung);
-            temp = temp.next;
+
+    public void displayQueue() {
+        if (first == null) {
+            System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+            System.out.println("║              ANTRIAN KOSONG                           ║");
+            System.out.println("╚═══════════════════════════════════════════════════════╝");
+            return;
         }
-        System.out.println("=====================================================");
+        
+        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+        System.out.println("║              ANTRIAN PENGUNJUNG TOUR                  ║");
+        System.out.println("╠═══════════════════════════════════════════════════════╣");
+        
+        QueueNode temp = first;
+        int num = 1; 
+        
+        while (temp != null) {
+            System.out.println("  " + num + ". " + temp.pengunjung);
+            temp = temp.next;
+            num++; 
+        }
+        
+        System.out.println("╚═══════════════════════════════════════════════════════╝");
+        System.out.println("Total antrian: " + size + " orang");
     }
 }

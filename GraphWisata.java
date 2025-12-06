@@ -85,7 +85,7 @@ public class GraphWisata {
             String stars = "";
             int fullStars = (int) current.rating;
             for (int i = 0; i < fullStars; i++) {
-                stars += "⭐";
+                stars += "*";
             }
             
             System.out.println(num + ". " + current.namaWisata + " (" + current.jenis + ") " + stars + " " + current.rating);
@@ -94,29 +94,6 @@ public class GraphWisata {
         }
         System.out.println("╚════════════════════════════════════════════╝");
         System.out.println("Total: " + size + " wisata");
-    }
-    
-    public void displayGraph() {
-        System.out.println("\n=== GRAPH WISATA " + namaKabupaten.toUpperCase() + " ===");
-        GNodeWisata current = firstWisata;
-        if (current == null) {
-            System.out.println("Graph kosong.");
-            return;
-        }
-        
-        while (current != null) {
-            System.out.println("\n" + current.namaWisata + ":");
-            GEdgeWisata edge = current.firstEdgeWis;
-            if (edge == null) {
-                System.out.println("  Tidak ada koneksi.");
-            } else {
-                while (edge != null) {
-                    System.out.println("  → " + edge.toWisata.namaWisata + " (" + edge.weight + " km)");
-                    edge = edge.next;
-                }
-            }
-            current = current.next;
-        }
     }
     
     public PathResult dijkstra(String start, String goal) {

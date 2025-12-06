@@ -405,9 +405,7 @@ public class DataWisata {
     
     // Setup dummy review untuk testing
     public static void setupDummyReview(GraphKabupaten graph) {
-        // Review untuk beberapa wisata populer
-        
-        // Sembalun
+        // Review untuk Sembalun (Lombok Timur)
         GNodeKabupaten lombokTimur = graph.getNode("Lombok Timur");
         if (lombokTimur != null) {
             GNodeWisata sembalun = lombokTimur.graphWisata.getNode("Sembalun");
@@ -426,18 +424,19 @@ public class DataWisata {
             }
         }
         
-        // Gili Trawangan
+        // Review untuk Gili Trawangan (Lombok Utara)
         GNodeKabupaten lombokUtara = graph.getNode("Lombok Utara");
         if (lombokUtara != null) {
             GNodeWisata giliT = lombokUtara.graphWisata.getNode("Gili Trawangan");
             if (giliT != null) {
-            giliT.ulasan.push("Naya", 5, "Party island terbaik di Indonesia!", "03-12-2024");
-            giliT.ulasan.push("Gea", 5, "Diving spot keren dan nightlife seru", "01-12-2024");
-            giliT.ulasan.push("Bang Ridho", 4, "Ramai tapi menyenangkan", "29-11-2024");
-            giliT.updateRating();
+                giliT.ulasan.push("Naya", 5, "Party island terbaik di Indonesia!", "03-12-2024");
+                giliT.ulasan.push("Gea", 5, "Diving spot keren dan nightlife seru", "01-12-2024");
+                giliT.ulasan.push("Bang Ridho", 4, "Ramai tapi menyenangkan", "29-11-2024");
+                giliT.updateRating();
             }
         }
-        // Pantai Kuta Mandalika
+        
+        // Review untuk Pantai Kuta Mandalika (Lombok Tengah)
         GNodeKabupaten lombokTengah = graph.getNode("Lombok Tengah");
         if (lombokTengah != null) {
             GNodeWisata kuta = lombokTengah.graphWisata.getNode("Pantai Kuta Mandalika");

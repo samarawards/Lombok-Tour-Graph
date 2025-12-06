@@ -1,7 +1,7 @@
 public class LLNode {
     String lokasi;
     String jenis;
-    float jarak; // ✅ FIX: Ganti ke float
+    float jarak;
     LLNode next;
 
     public LLNode(String lokasi, String jenis, float jarak) {

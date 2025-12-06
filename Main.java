@@ -18,9 +18,6 @@ public class Main {
         System.out.println("║     Explore Lombok's beauty through connected nodes   ║");
         System.out.println("║         and intelligent route calculations.           ║");
         System.out.println("╚═══════════════════════════════════════════════════════╝");
-    //     System.out.println("          Sistem Tour Guide Pulau Lombok");
-    //     System.out.println("       dengan Nested Graph & Dijkstra Algorithm");
-    //     System.out.println("═══════════════════════════════════════════════════════════\n");
     }
     
     // Load semua data Lombok (kabupaten + wisata)
@@ -83,7 +80,7 @@ public class Main {
         }
         
         // Setup dummy review untuk testing
-        // DataWisata.setupDummyReview(gKab);
+        DataWisata.setupDummyReview(gKab);
         
         return gKab;
     }
@@ -138,9 +135,39 @@ public class Main {
                 displaySemuaWisata(graph);
                 
             } else if (pilih == 2) {
+                SearchEngine search = new SearchEngine();
                 // Search wisata (Anggota 5 - SearchEngine)
-                System.out.println("\n Fitur search belum diimplementasi.");
-                System.out.println("    (Akan dikerjakan oleh Anggota 5)");
+                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                System.out.println("║           CARI TEMPAT WISATA BERDASARKAN              ║");
+                System.out.println("╠═══════════════════════════════════════════════════════╣");
+                System.out.println("║ 1. Nama                                               ║");
+                System.out.println("║ 2. Kategori/Jenis                                     ║");
+                System.out.println("║ 3. Rating                                             ║");
+                System.out.println("║ 4. Kabupaten                                          ║");
+                System.out.println("║ 5. Kembali                                            ║");
+                System.out.println("╚═══════════════════════════════════════════════════════╝");
+                System.out.print("Pilih: ");
+                int pilihCari = input.nextInt(); 
+                input.nextLine();
+
+                switch (pilihCari) {
+                    case 1:
+                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.print("Cari tempat wisata berdasarkan nama: ");
+                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        String cari = input.nextLine();
+                        GNodeWisata inidia = search.searchByNama(graph, cari);
+                        if (inidia != null) {
+                            inidia.displayInfo();
+                        }else{
+                            System.out.println("Wisata " + cari + " belum terdaftar dalam sistem.");
+                        }
+                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        break;
+                
+                    default:
+                        break;
+                }
                 
             } else if (pilih == 3) {
                 // Menu Antrian

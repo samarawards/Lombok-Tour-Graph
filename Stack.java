@@ -21,17 +21,6 @@ public class Stack {
         size++;
     }
 
-    public StackNode pop() {
-        if (top == null) {
-            System.out.println("❌ Stack kosong!");
-            return null;
-        }
-        StackNode popped = top;
-        top = top.next;
-        size--;
-        return popped;
-    }
-
     public void displayAll() {
         if (top == null) {
             System.out.println("Belum ada ulasan.");
@@ -56,45 +45,6 @@ public class Stack {
         
         System.out.println("╚════════════════════════════════════════════╝");
         System.out.println("Total: " + size + " ulasan");
-    }
-
-    public void displayByRating(int minRating) {
-        if (top == null) {
-            System.out.println("Belum ada ulasan.");
-            return;
-        }
-        
-        if (minRating < 1 || minRating > 5) {
-            System.out.println("❌ Rating harus antara 1-5!");
-            return;
-        }
-        
-        System.out.println("\n╔════════════════════════════════════════════╗");
-        System.out.println("║   ULASAN RATING >= " + minRating + "                     ║");
-        System.out.println("╠════════════════════════════════════════════╣");
-        
-        StackNode current = top;
-        int count = 0;
-        while (current != null) {
-            if (current.rating >= minRating) {
-                System.out.print("[" + current.indeks + "] ");
-                for (int i = 0; i < current.rating; i++) {
-                    System.out.print("⭐");
-                }
-                System.out.println(" - " + current.namaPengunjung + " (" + current.tanggal + ")");
-                System.out.println("    \"" + current.komentar + "\"");
-                System.out.println();
-                count++;
-            }
-            current = current.next;
-        }
-        
-        if (count == 0) {
-            System.out.println("  Tidak ada ulasan dengan rating >= " + minRating);
-        }
-        
-        System.out.println("╚════════════════════════════════════════════╝");
-        System.out.println("Total: " + count + " ulasan");
     }
 
     public double getAverageRating() {

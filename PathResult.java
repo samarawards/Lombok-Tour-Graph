@@ -23,14 +23,14 @@ public class PathResult {
         }
     }
     
-    public void displaySimple() {
-        if (found) {
-            System.out.println("Rute: " + jalur);
-            System.out.println("Total Jarak: " + totalJarak + " km");
-        } else {
-            System.out.println("❌ Rute tidak ditemukan!");
-        }
-    }
+    // public void displaySimple() {
+    //     if (found) {
+    //         System.out.println("Rute: " + jalur);
+    //         System.out.println("Total Jarak: " + totalJarak + " km");
+    //     } else {
+    //         System.out.println("❌ Rute tidak ditemukan!");
+    //     }
+    // }
     
     // Getter methods
     public String getJalur() {
@@ -45,11 +45,3 @@ public class PathResult {
         return found;
     }
 }
-
-/*
-class untuk menyimpan hasil pathfinding Dijkstra. Dipakai oleh GraphKabupaten dan GraphWisata.
-Dipakai:
-- GraphKabupaten.java (Dijkstra kabupaten)
-- GraphWisata.java (Dijkstra wisata)
-- Main.java (display rute)
-*/
