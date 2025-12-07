@@ -162,39 +162,57 @@ public class Main {
                             inidia.displayInfo();
                             System.out.print("See Comments...(Y/N)");
                             cari = input.nextLine();
-                            if (cari == "Y" || cari == "y" ) {
-                                //DISPLAY KOMEN UNTUK WISATA YANG DICARI => inidia
-                                System.out.println("\n╔════════════════════════════════════════════╗");
-                                System.out.println("║           SORT ULASAN BERDASARKAN          ║");
-                                System.out.println("╠════════════════════════════════════════════╣");
-                                System.out.println("║1. Rating Tertinggi → Terendah              ║");
-                                System.out.println("║2. Rating Terendah → Tertinggi              ║");
-                                System.out.println("║3. Komentar Pertama → Terakhir              ║");
-                                System.out.println("║4. Komentar Terakhir → Pertama              ║");
-                                System.out.println("║5. Kembali                                  ║");
-                                System.out.println("╚════════════════════════════════════════════╝");
-                                System.out.print("pilihan: ");
-                                int pilihSort = input.nextInt(); input.nextLine();
-                                switch (pilihSort) {
-                                    case 1:
-                                        SortingManager.sortUlasanByRating(inidia.getUlasan(), true);
-                                        break;
-                                    case 2:
-                                        SortingManager.sortUlasanByRating(inidia.getUlasan(), false);
-                                        break;
-                                    case 3:
-                                        SortingManager.sortUlasanByIndeks(inidia.getUlasan(), true);
-                                        break;
-                                    case 4:
-                                        SortingManager.sortUlasanByIndeks(inidia.getUlasan(), false);
-                                        break;
-                                    case 5:
-                                        break;
-                                    default:
-                                        System.out.println("❌ Pilihan tidak valid");
-                                        break;
+                            if (cari.equalsIgnoreCase("Y")) {
+                                // Cek apakah ada ulasan
+                                if (inidia.ulasan.isEmpty()) {
+                                    System.out.println("\n❌ Belum ada ulasan untuk wisata ini.");
+                                } else {
+                                    boolean viewComments = true;
+                                    while (viewComments) {
+                                        System.out.println("\n╔════════════════════════════════════════════╗");
+                                        System.out.println("║           SORT ULASAN BERDASARKAN          ║");
+                                        System.out.println("╠════════════════════════════════════════════╣");
+                                        System.out.println("║ 1. Rating Tertinggi → Terendah            ║");
+                                        System.out.println("║ 2. Rating Terendah → Tertinggi            ║");
+                                        System.out.println("║ 3. Komentar Pertama → Terakhir            ║");
+                                        System.out.println("║ 4. Komentar Terakhir → Pertama            ║");
+                                        System.out.println("║ 5. Semua Ulasan (LIFO)                    ║");
+                                        System.out.println("║ 6. Kembali                                ║");
+                                        System.out.println("╚════════════════════════════════════════════╝");
+                                        System.out.print("Pilihan: ");
+                                        int pilihSort = input.nextInt(); 
+                                        input.nextLine();
+                                        
+                                        switch (pilihSort) {
+                                            case 1:
+                                                // Rating Tertinggi ke terendah
+                                                SortingManager.sortUlasanByRating(inidia.ulasan, true);
+                                                break;
+                                            case 2:
+                                                // Rating Terendah → Tertinggi
+                                                SortingManager.sortUlasanByRating(inidia.ulasan, false);
+                                                break;
+                                            case 3:
+                                                // Komentar Pertama → Terakhir
+                                                SortingManager.sortUlasanByIndeks(inidia.ulasan, true);
+                                                break;
+                                            case 4:
+                                                // Komentar Terakhir → Pertama
+                                                SortingManager.sortUlasanByIndeks(inidia.ulasan, false);
+                                                break;
+                                            case 5:
+                                                // Display all (LIFO - default Stack behavior)
+                                                inidia.ulasan.displayAll();
+                                                break;
+                                            case 6:
+                                                viewComments = false;
+                                                break;
+                                            default:
+                                                System.out.println("❌ Pilihan tidak valid");
+                                                break;
+                                        }
+                                    }
                                 }
- 
                             }
                         }else{
                             System.out.println("Wisata " + cari + " belum terdaftar dalam sistem.");
@@ -298,30 +316,104 @@ public class Main {
                     System.out.println("╠═══════════════════════════════════════════════════════╣");
                     do {
                         System.out.print(" Pilihan: "); 
-                        pilihperjalanan = input.nextInt(); input.nextLine();
+                        pilihperjalanan = input.nextInt(); 
+                        input.nextLine();
                         
-                        switch (pilihperjalanan) {
-                            case 1:
-                                do {
-                                    System.out.println("[admin] : Mau melanjutkan perjalanan kemana?");
-                                    System.out.print("["+ orang.pengunjung +"] : "); 
-                                    String t = input.nextLine();
-                                    tujuan = search.searchByNama(graph, t); //ini tujuannya diperbarahui, tapi startnya belum diperbaharui
-                                    if (tujuan != null) {
-                                        break;
-                                    }else System.out.println("Maaf, tujuan yang anda cari belum terdaftar dalam sistem.");
-                                } while (tujuan == null);
-                                break;
-                                
-                            case 2:
-                                //INI BUAT MENU UNTUK MEMBERIKAN ULASAN ATAU TIDAK, KALAU IYA KELUARKAN SEMUA TEMPAT YANG MASUK LINKED LISTNYA
-                                //ORANG ITU SATU PERSATU TERUS MINTA INPUT RATING DAN KOMENTAR UNTUK SETIAP TEMPAT YANG DIKUNJUNGI
-                                break;
-                            default:
-                                System.out.println("❌ Pilihan tidak valid");
-                                break;
+                        if (pilihperjalanan == 1) {
+                            do {
+                                System.out.println("[admin] : Mau melanjutkan perjalanan kemana?");
+                                System.out.print("["+ orang.pengunjung +"] : "); 
+                                String t = input.nextLine();
+                                tujuan = search.searchByNama(graph, t);
+                                if (tujuan != null) {
+                                    break;
+                                } else {
+                                    System.out.println("Maaf, tujuan yang anda cari belum terdaftar dalam sistem.");
+                                }
+                            } while (tujuan == null);
+                            break;
+                            
+                        } else if (pilihperjalanan == 2) {
+                            System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                            System.out.println("║          TERIMA KASIH SUDAH BERKUNJUNG!               ║");
+                            System.out.println("╠═══════════════════════════════════════════════════════╣");
+                            System.out.print("║ Apakah Anda ingin memberikan ulasan? (Y/N): ");
+                            String jawab = input.nextLine();
+                            
+                            if (jawab.equalsIgnoreCase("Y")) {
+                                // Display semua wisata yang dikunjungi dari LinkedList
+                                if (orang.jalur.head == null) {
+                                    System.out.println("║ Belum ada wisata yang dikunjungi.                    ║");
+                                } else {
+                                    System.out.println("╠═══════════════════════════════════════════════════════╣");
+                                    System.out.println("║        WISATA YANG TELAH ANDA KUNJUNGI:              ║");
+                                    System.out.println("╠═══════════════════════════════════════════════════════╣");
+                                    
+                                    // Display list wisata
+                                    GNodeWisata tempWis = orang.jalur.head;
+                                    int num = 1;
+                                    while (tempWis != null) {
+                                        System.out.println("║ " + num + ". " + tempWis.namaWisata);
+                                        tempWis = tempWis.next;
+                                        num++;
+                                    }
+                                    
+                                    System.out.println("╠═══════════════════════════════════════════════════════╣");
+                                    
+                                    // Loop untuk setiap wisata yang dikunjungi
+                                    tempWis = orang.jalur.head;
+                                    while (tempWis != null) {
+                                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                                        System.out.println("║ ULASAN UNTUK: " + tempWis.namaWisata);
+                                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                                        
+                                        // Input rating
+                                        int rating = 0;
+                                        do {
+                                            System.out.print("║ Rating (1-5): ");
+                                            rating = input.nextInt();
+                                            input.nextLine();
+                                            
+                                            if (rating < 1 || rating > 5) {
+                                                System.out.println("║ Rating harus antara 1-5!");
+                                            }
+                                        } while (rating < 1 || rating > 5);
+                                        
+                                        // Input komentar
+                                        System.out.print("║ Komentar: ");
+                                        String komentar = input.nextLine();
+                                        
+                                        String tanggal = "07-12-2024"; // Bisa diganti dengan tanggal real
+                                        
+                                        // Push ulasan ke Stack wisata
+                                        GNodeWisata wisataAsli = search.searchByNama(graph, tempWis.namaWisata);
+                                        if (wisataAsli != null) {
+                                            wisataAsli.ulasan.push(orang.pengunjung, rating, komentar, tanggal);
+                                            wisataAsli.updateRating();
+                                            System.out.println("║ Ulasan berhasil ditambahkan!");
+                                        }
+                                        
+                                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                                        
+                                        tempWis = tempWis.next;
+                                    }
+                                    
+                                    System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                                    System.out.println("║   TERIMA KASIH ATAS ULASAN ANDA!                      ║");
+                                    System.out.println("╚═══════════════════════════════════════════════════════╝");
+                                }
+                            }
+                            
+                            System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                            System.out.println("║          SAMPAI JUMPA KEMBALI!                        ║");
+                            System.out.println("╚═══════════════════════════════════════════════════════╝");
+                            break;
+                            
+                        } else {
+                            System.out.println("Pilihan tidak valid. Pilih 1 atau 2.");
                         }
-                    } while (pilihperjalanan != 1 || pilihperjalanan != 2);
+                    } while (pilihperjalanan != 1 && pilihperjalanan != 2);
+                    
                 } while (pilihperjalanan == 1);
                 
             } else if (pilih == 5) {
@@ -332,7 +424,7 @@ public class Main {
                 running = false;
                 
             } else {
-                System.out.println("❌ Pilihan tidak valid. Silakan pilih 1-5.");
+                System.out.println("Pilihan tidak valid. Silakan pilih 1-5.");
             }
         } while (running);
         
