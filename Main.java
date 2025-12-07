@@ -177,16 +177,16 @@ public class Main {
                                 int pilihSort = input.nextInt(); input.nextLine();
                                 switch (pilihSort) {
                                     case 1:
-                                        //Rating Tertinggi ke terendah
+                                        SortingManager.sortUlasanByRating(inidia.getUlasan(), true);
                                         break;
                                     case 2:
-                                        //Rating Terendah → Tertinggi
+                                        SortingManager.sortUlasanByRating(inidia.getUlasan(), false);
                                         break;
                                     case 3:
-                                        //Komentar Pertama → Terakhir
+                                        SortingManager.sortUlasanByIndeks(inidia.getUlasan(), true);
                                         break;
                                     case 4:
-                                        //Komentar Terakhir → Pertama
+                                        SortingManager.sortUlasanByIndeks(inidia.getUlasan(), false);
                                         break;
                                     case 5:
                                         break;
