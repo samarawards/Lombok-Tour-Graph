@@ -1,6 +1,6 @@
 public class GraphKabupaten {
-    GNodeKabupaten firstKab; // Head linked list kabupaten
-    int size; // Jumlah kabupaten
+    GNodeKabupaten firstKab;
+    int size;
 
     public GraphKabupaten() {
         this.firstKab = null;
@@ -18,7 +18,7 @@ public class GraphKabupaten {
         return null;
     }
 
-    private GNodeKabupaten addKabupaten(String namaKabupaten) {
+    public GNodeKabupaten addKabupaten(String namaKabupaten) {
         GNodeKabupaten existing = getNode(namaKabupaten);
         if (existing != null) return existing;
 
@@ -36,31 +36,20 @@ public class GraphKabupaten {
         from.addEdgeKab(to, weight); 
         to.addEdgeKab(from, weight); 
     }
-
-    public void addWisata(String kabupaten, String fromWisata, String toWisata, float weight) {
-        GNodeKabupaten kab = getNode(kabupaten);
-        if (kab == null) {
-            System.out.println("Kabupaten " + kabupaten + " tidak ditemukan!");
-            return;
-        }
-        
-        // GraphWisata sudah auto-init di constructor GNodeKabupaten
-        kab.graphWisata.addJalurWisata(fromWisata, toWisata, weight);
-    }
     
     public void resetGraph() {
         GNodeKabupaten current = firstKab;
         while (current != null) {
-            current.resetDijkstra();
+            current.visited = false;
+            current.jarakDariStart = Float.MAX_VALUE;
+            current.prev = null;
             current = current.next;
         }
     }
     
     public PathResult dijkstra(String start, String goal) {
-        // Reset graph
         resetGraph();
         
-        // Cari node start dan goal
         GNodeKabupaten startNode = getNode(start);
         GNodeKabupaten goalNode = getNode(goal);
         
@@ -68,60 +57,49 @@ public class GraphKabupaten {
             return new PathResult("", 0, false);
         }
         
-        // Jika start == goal
         if (startNode == goalNode) {
             return new PathResult(start, 0, true);
         }
         
-        // Set distance start = 0
-        startNode.setJarakDariStart(0);
+        startNode.jarakDariStart = 0;
         
-        // Loop sampai semua node visited
         int visitedCount = 0;
         while (visitedCount < size) {
-            // Cari node unvisited dengan distance terkecil
             GNodeKabupaten minNode = cariNodeJarakTerkecil();
-            if (minNode == null) break; // Semua node sudah visited atau unreachable
+            if (minNode == null) break;
             
-            // Mark visited
-            minNode.setVisited(true);
+            minNode.visited = true;
             visitedCount++;
             
-            // Jika sudah sampai goal, bisa stop
             if (minNode == goalNode) break;
             
-            // Update distance tetangga
-            GEdgeKabupaten edge = minNode.getFirstEdge();
+            GEdgeKabupaten edge = minNode.firstEdgeKab;
             while (edge != null) {
                 GNodeKabupaten neighbor = edge.toKab;
-                if (!neighbor.isVisited()) {
-                    float newDist = minNode.getJarakDariStart() + edge.weight;
-                    if (newDist < neighbor.getJarakDariStart()) {
-                        neighbor.setJarakDariStart(newDist);
-                        neighbor.setPrev(minNode);
+                if (!neighbor.visited) {
+                    float newDist = minNode.jarakDariStart + edge.weight;
+                    if (newDist < neighbor.jarakDariStart) {
+                        neighbor.jarakDariStart = newDist;
+                        neighbor.prev = minNode;
                     }
                 }
                 edge = edge.next;
             }
         }
         
-        // Reconstruct path dari goal ke start
-        if (goalNode.getJarakDariStart() == Float.MAX_VALUE) {
-            // Goal unreachable
+        if (goalNode.jarakDariStart == Float.MAX_VALUE) {
             return new PathResult("", 0, false);
         }
         
-        // Build path menggunakan string concatenation (TANPA ARRAY!)
         String jalur = "";
-        float totalJarak = goalNode.getJarakDariStart();
+        float totalJarak = goalNode.jarakDariStart;
         
-        // Reconstruct dari goal ke start
         GNodeKabupaten current = goalNode;
-        String pathReverse = current.getNamaKabupaten();
+        String pathReverse = current.namaKabupaten;
         
-        while (current.getPrev() != null) {
-            current = current.getPrev();
-            pathReverse = current.getNamaKabupaten() + " → " + pathReverse;
+        while (current.prev != null) {
+            current = current.prev;
+            pathReverse = current.namaKabupaten + " -> " + pathReverse;
         }
         
         jalur = pathReverse;
@@ -129,32 +107,19 @@ public class GraphKabupaten {
         return new PathResult(jalur, totalJarak, true);
     }
 
-    private GNodeKabupaten cariNodeJarakTerkecil() {
+    public GNodeKabupaten cariNodeJarakTerkecil() {
         GNodeKabupaten current = firstKab;
         GNodeKabupaten minNode = null;
         float minDist = Float.MAX_VALUE;
         
         while (current != null) {
-            if (!current.isVisited() && current.getJarakDariStart() < minDist) {
-                minDist = current.getJarakDariStart();
+            if (!current.visited && current.jarakDariStart < minDist) {
+                minDist = current.jarakDariStart;
                 minNode = current;
             }
             current = current.next;
         }
         
         return minNode;
-    }
-
-    public int countKabupaten() {
-        return size;
-    }
-    
-    public boolean isEmpty() {
-        return firstKab == null;
-    }
-    
-    // Getter
-    public GNodeKabupaten getFirstKab() {
-        return firstKab;
     }
 }

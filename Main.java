@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Main {
-    
     public static void printHeader() {
         System.out.println("\n█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█");
         System.out.println("█ ██╗      ██████╗ ███╗   ███╗██████╗  ██████╗ ██╗  ██╗ █");
@@ -20,12 +19,8 @@ public class Main {
         System.out.println("╚═══════════════════════════════════════════════════════╝");
     }
     
-    // Load semua data Lombok (kabupaten + wisata)
     public static GraphKabupaten loadData() {
-        
         GraphKabupaten gKab = new GraphKabupaten();
-        
-        // ===== SETUP GRAPH KABUPATEN =====
         
         gKab.addJalurKab("Mataram", "Lombok Barat 1", 15.7f);
         gKab.addJalurKab("Mataram", "Lombok Barat 2", 21.2f);
@@ -79,18 +74,15 @@ public class Main {
             DataWisata.setupWisataLombokUtara(lombokUtara.graphWisata);
         }
         
-        // Setup dummy review untuk testing
         DataWisata.setupDummyReview(gKab);
         
         return gKab;
     }
     
-    
-    // Display semua wisata dari semua kabupaten (untuk menu 1)
     public static void displaySemuaWisata(GraphKabupaten graph) {
-        System.out.println("\n╔════════════════════════════════════════════════════════╗");
-        System.out.println("║               SEMUA WISATA DI PULAU LOMBOK             ║");
-        System.out.println("╚════════════════════════════════════════════════════════╝");
+        System.out.println("\n===========================================================");
+        System.out.println("           SEMUA WISATA DI PULAU LOMBOK");
+        System.out.println("===========================================================");
         
         String[] kabupatenList = {
             "Lombok Barat 1", "Lombok Barat 2", "Lombok Barat 3",
@@ -105,10 +97,165 @@ public class Main {
         }
     }
     
+    public static String cariKabupatenDariWisata(GraphKabupaten graph, String namaWisata) {
+        GNodeKabupaten currentKab = graph.firstKab;
+        
+        while (currentKab != null) {
+            GNodeWisata found = currentKab.graphWisata.getNode(namaWisata);
+            if (found != null) {
+                return currentKab.namaKabupaten;
+            }
+            currentKab = currentKab.next;
+        }
+        
+        return null;
+    }
+    
+    public static void displayRuteKabupaten(PathResult result, String startKab, String goalKab) {
+        if (!result.found) {
+            System.out.println("\n[X] Tidak dapat menemukan rute ke kabupaten tujuan!");
+            return;
+        }
+        
+        System.out.println("\n===========================================================");
+        System.out.println("           RUTE PERJALANAN ANTAR KABUPATEN");
+        System.out.println("===========================================================");
+        
+        String jalur = result.jalur;
+        int startIdx = 0;
+        int stepNum = 1;
+        
+        for (int i = 0; i <= jalur.length(); i++) {
+            if (i == jalur.length() || (i < jalur.length() - 1 && jalur.charAt(i) == ' ' && jalur.charAt(i+1) == '-')) {
+                String kab = jalur.substring(startIdx, i).trim();
+                
+                if (kab.length() > 0) {
+                    if (stepNum == 1) {
+                        System.out.println("  " + stepNum + ". [START] " + kab);
+                    } else {
+                        System.out.println("       |");
+                        System.out.println("       v");
+                        System.out.println("  " + stepNum + ". " + kab);
+                    }
+                    stepNum++;
+                }
+                
+                if (i < jalur.length() - 2 && jalur.charAt(i+1) == '-') {
+                    i += 3;
+                }
+                startIdx = i + 1;
+            }
+        }
+        
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("  Total Jarak Antar Kabupaten: " + result.totalJarak + " km");
+        System.out.println("===========================================================");
+    }
+    
+    public static void displayRuteWisata(PathResult result, String kabupaten) {
+        if (!result.found) {
+            System.out.println("\n[X] Tidak dapat menemukan rute ke wisata tujuan!");
+            return;
+        }
+        
+        System.out.println("\n===========================================================");
+        System.out.println("      RUTE WISATA DI DALAM " + kabupaten.toUpperCase());
+        System.out.println("===========================================================");
+        
+        String jalur = result.jalur;
+        int startIdx = 0;
+        int stepNum = 1;
+        
+        for (int i = 0; i <= jalur.length(); i++) {
+            if (i == jalur.length() || (i < jalur.length() - 1 && jalur.charAt(i) == ' ' && jalur.charAt(i+1) == '-')) {
+                String wisata = jalur.substring(startIdx, i).trim();
+                
+                if (wisata.length() > 0) {
+                    if (stepNum == 1) {
+                        System.out.println("  " + stepNum + ". [ENTRY] " + wisata);
+                    } else {
+                        System.out.println("       |");
+                        System.out.println("       v");
+                        System.out.println("  " + stepNum + ". " + wisata);
+                    }
+                    stepNum++;
+                }
+                
+                if (i < jalur.length() - 2 && jalur.charAt(i+1) == '-') {
+                    i += 3;
+                }
+                startIdx = i + 1;
+            }
+        }
+        
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("  Jarak Dalam Kabupaten: " + result.totalJarak + " km");
+        System.out.println("===========================================================");
+    }
+    
+    public static void simpanJalurKeLinkedList(LinkedList jalur, PathResult resultKab, PathResult resultWis, String kabupatenTujuan) {
+        if (resultKab.found) {
+            String jalurKab = resultKab.jalur;
+            int startIdx = 0;
+            
+            for (int i = 0; i <= jalurKab.length(); i++) {
+                if (i == jalurKab.length() || (i < jalurKab.length() - 1 && jalurKab.charAt(i) == ' ' && jalurKab.charAt(i+1) == '-')) {
+                    String kab = jalurKab.substring(startIdx, i).trim();
+                    
+                    if (kab.length() > 0) {
+                        float jarak = 0;
+                        if (startIdx > 0) {
+                            jarak = resultKab.totalJarak / countArrows(jalurKab);
+                        }
+                        jalur.addLokasi(kab, "Kabupaten", jarak);
+                    }
+                    
+                    if (i < jalurKab.length() - 2 && jalurKab.charAt(i+1) == '-') {
+                        i += 3;
+                    }
+                    startIdx = i + 1;
+                }
+            }
+        }
+        
+        if (resultWis.found) {
+            String jalurWis = resultWis.jalur;
+            int startIdx = 0;
+            
+            for (int i = 0; i <= jalurWis.length(); i++) {
+                if (i == jalurWis.length() || (i < jalurWis.length() - 1 && jalurWis.charAt(i) == ' ' && jalurWis.charAt(i+1) == '-')) {
+                    String wisata = jalurWis.substring(startIdx, i).trim();
+                    
+                    if (wisata.length() > 0) {
+                        float jarak = 0;
+                        if (startIdx > 0) {
+                            jarak = resultWis.totalJarak / countArrows(jalurWis);
+                        }
+                        jalur.addLokasi(wisata, "Wisata", jarak);
+                    }
+                    
+                    if (i < jalurWis.length() - 2 && jalurWis.charAt(i+1) == '-') {
+                        i += 3;
+                    }
+                    startIdx = i + 1;
+                }
+            }
+        }
+    }
+    
+    public static int countArrows(String jalur) {
+        int count = 0;
+        for (int i = 0; i < jalur.length() - 1; i++) {
+            if (jalur.charAt(i) == '-' && i > 0 && jalur.charAt(i-1) == ' ') {
+                count++;
+            }
+        }
+        return count > 0 ? count : 1;
+    }
+    
     public static void main(String[] args) {
         printHeader();
         
-        // Initialize data
         GraphKabupaten graph = loadData();
         Queue queue = new Queue();
         SearchEngine search = new SearchEngine();
@@ -118,34 +265,32 @@ public class Main {
 
         int pilih;
         do {
-            System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-            System.out.println("║               LOMBOK TOUR GUIDE SYSTEM                ║");
-            System.out.println("╠═══════════════════════════════════════════════════════╣");
-            System.out.println("║ 1. Lihat Semua Wisata                                 ║");
-            System.out.println("║ 2. Cari Tempat Wisata                                 ║");
-            System.out.println("║ 3. Antrian                                            ║");
-            System.out.println("║ 4. Mulai Tour                                         ║");
-            System.out.println("║ 5. Keluar                                             ║");
-            System.out.println("╚═══════════════════════════════════════════════════════╝");
+            System.out.println("\n===========================================================");
+            System.out.println("           LOMBOK TOUR GUIDE SYSTEM");
+            System.out.println("===========================================================");
+            System.out.println("  1. Lihat Semua Wisata");
+            System.out.println("  2. Cari Tempat Wisata");
+            System.out.println("  3. Antrian");
+            System.out.println("  4. Mulai Tour");
+            System.out.println("  5. Keluar");
+            System.out.println("===========================================================");
             System.out.print("Pilih menu: ");
             pilih = input.nextInt(); 
             input.nextLine();
             
             if (pilih == 1) {
-                // Display semua wisata
                 displaySemuaWisata(graph);
                 
             } else if (pilih == 2) {
-                // Search wisata (Anggota 5 - SearchEngine)
-                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                System.out.println("║           CARI TEMPAT WISATA BERDASARKAN              ║");
-                System.out.println("╠═══════════════════════════════════════════════════════╣");
-                System.out.println("║ 1. Nama                                               ║");
-                System.out.println("║ 2. Kategori/Jenis                                     ║");
-                System.out.println("║ 3. Rating                                             ║");
-                System.out.println("║ 4. Kabupaten                                          ║");
-                System.out.println("║ 5. Kembali                                            ║");
-                System.out.println("╚═══════════════════════════════════════════════════════╝");
+                System.out.println("\n===========================================================");
+                System.out.println("       CARI TEMPAT WISATA BERDASARKAN");
+                System.out.println("===========================================================");
+                System.out.println("  1. Nama");
+                System.out.println("  2. Kategori/Jenis");
+                System.out.println("  3. Rating");
+                System.out.println("  4. Kabupaten");
+                System.out.println("  5. Kembali");
+                System.out.println("===========================================================");
                 System.out.print("Pilih: ");
                 int pilihCari = input.nextInt(); 
                 input.nextLine();
@@ -153,111 +298,112 @@ public class Main {
                 String cari;
                 switch (pilihCari) {
                     case 1:
-                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.println("\n===========================================================");
                         System.out.print("Cari tempat wisata berdasarkan nama: ");
                         cari = input.nextLine();
-                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        System.out.println("-----------------------------------------------------------");
                         GNodeWisata inidia = search.searchByNama(graph, cari);
                         if (inidia != null) {
                             inidia.displayInfo();
-                            System.out.print("See Comments...(Y/N)");
-                            cari = input.nextLine();
-                            if (cari.equalsIgnoreCase("Y")) {
-                                // Cek apakah ada ulasan
+                            System.out.print("\nLihat Komentar? (Y/N): ");
+                            String lihatKomen = input.nextLine();
+                            if (lihatKomen.equalsIgnoreCase("Y")) {
                                 if (inidia.ulasan.isEmpty()) {
-                                    System.out.println("\n❌ Belum ada ulasan untuk wisata ini.");
+                                    System.out.println("\n[X] Belum ada ulasan untuk wisata ini.");
                                 } else {
                                     boolean viewComments = true;
                                     while (viewComments) {
-                                        System.out.println("\n╔════════════════════════════════════════════╗");
-                                        System.out.println("║           SORT ULASAN BERDASARKAN          ║");
-                                        System.out.println("╠════════════════════════════════════════════╣");
-                                        System.out.println("║ 1. Rating Tertinggi → Terendah            ║");
-                                        System.out.println("║ 2. Rating Terendah → Tertinggi            ║");
-                                        System.out.println("║ 3. Komentar Pertama → Terakhir            ║");
-                                        System.out.println("║ 4. Komentar Terakhir → Pertama            ║");
-                                        System.out.println("║ 5. Semua Ulasan (LIFO)                    ║");
-                                        System.out.println("║ 6. Kembali                                ║");
-                                        System.out.println("╚════════════════════════════════════════════╝");
+                                        System.out.println("\n===========================================================");
+                                        System.out.println("           SORT ULASAN BERDASARKAN");
+                                        System.out.println("===========================================================");
+                                        System.out.println("  1. Rating Tertinggi -> Terendah");
+                                        System.out.println("  2. Rating Terendah -> Tertinggi");
+                                        System.out.println("  3. Komentar Pertama -> Terakhir");
+                                        System.out.println("  4. Komentar Terakhir -> Pertama");
+                                        System.out.println("  5. Semua Ulasan (LIFO)");
+                                        System.out.println("  6. Kembali");
+                                        System.out.println("===========================================================");
                                         System.out.print("Pilihan: ");
                                         int pilihSort = input.nextInt(); 
                                         input.nextLine();
                                         
                                         switch (pilihSort) {
                                             case 1:
-                                                // Rating Tertinggi ke terendah
                                                 SortingManager.sortUlasanByRating(inidia.ulasan, true);
                                                 break;
                                             case 2:
-                                                // Rating Terendah → Tertinggi
                                                 SortingManager.sortUlasanByRating(inidia.ulasan, false);
                                                 break;
                                             case 3:
-                                                // Komentar Pertama → Terakhir
                                                 SortingManager.sortUlasanByIndeks(inidia.ulasan, true);
                                                 break;
                                             case 4:
-                                                // Komentar Terakhir → Pertama
                                                 SortingManager.sortUlasanByIndeks(inidia.ulasan, false);
                                                 break;
                                             case 5:
-                                                // Display all (LIFO - default Stack behavior)
                                                 inidia.ulasan.displayAll();
                                                 break;
                                             case 6:
                                                 viewComments = false;
                                                 break;
                                             default:
-                                                System.out.println("❌ Pilihan tidak valid");
+                                                System.out.println("[X] Pilihan tidak valid");
                                                 break;
                                         }
                                     }
                                 }
                             }
-                        }else{
-                            System.out.println("Wisata " + cari + " belum terdaftar dalam sistem.");
+                        } else {
+                            System.out.println("Wisata \"" + cari + "\" belum terdaftar dalam sistem.");
                         }
-                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        System.out.println("===========================================================");
                         break;
+                        
                     case 2:
-                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.println("\n===========================================================");
                         System.out.print("Cari tempat wisata berdasarkan jenis: ");
+                        search.displayJenisWisata();
                         cari = input.nextLine();
-                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        System.out.println("-----------------------------------------------------------");
                         search.searchByJenis(graph, cari);
-                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        System.out.println("===========================================================");
                         break;
+                        
                     case 3:
-                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.println("\n===========================================================");
                         System.out.print("Cari tempat wisata dengan rating minimal: ");
-                        float rate = input.nextFloat(); input.nextLine();
-                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        float rate = input.nextFloat(); 
+                        input.nextLine();
+                        System.out.println("-----------------------------------------------------------");
                         search.searchByRating(graph, rate);
-                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        System.out.println("===========================================================");
                         break;
+                        
                     case 4:
-                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
+                        System.out.println("\n===========================================================");
                         System.out.print("Cari tempat wisata di dalam kabupaten: ");
                         cari = input.nextLine();
-                        System.out.println("╠═══════════════════════════════════════════════════════╣");
+                        System.out.println("-----------------------------------------------------------");
                         search.searchByKabupaten(graph, cari);
-                        System.out.println("╚═══════════════════════════════════════════════════════╝");
+                        System.out.println("===========================================================");
                         break;
-                    case 5: break;
+                        
+                    case 5: 
+                        break;
+                        
                     default:
-                        System.out.println("❌ Pilihan tidak valid");
+                        System.out.println("[X] Pilihan tidak valid");
                         break;
                 }
                 
             } else if (pilih == 3) {
-                // Menu Antrian
-                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                System.out.println("║                   ANTRIAN PENGUNJUNG                  ║");
-                System.out.println("╠═══════════════════════════════════════════════════════╣");
-                System.out.println("║ 1. Lihat Antrian                                      ║");
-                System.out.println("║ 2. Daftar Antrian                                     ║");
-                System.out.println("║ 3. Kembali                                            ║");
-                System.out.println("╚═══════════════════════════════════════════════════════╝");
+                System.out.println("\n===========================================================");
+                System.out.println("               ANTRIAN PENGUNJUNG");
+                System.out.println("===========================================================");
+                System.out.println("  1. Lihat Antrian");
+                System.out.println("  2. Daftar Antrian");
+                System.out.println("  3. Kembali");
+                System.out.println("===========================================================");
                 System.out.print("Pilih: ");
                 int pilihAntri = input.nextInt(); 
                 input.nextLine();
@@ -269,162 +415,235 @@ public class Main {
                     case 2:
                         System.out.print("\nMasukkan Nama Anda: ");
                         String name = input.nextLine();
-                        queue.enqueue(name);
-                        System.out.println("✓ Anda berhasil masuk ke dalam antrian!");
-                        // System.out.println("  Nomor antrian Anda: #" + queue.size);
+                        System.out.print("Tanggal Tour (DD-MM-YYYY): ");
+                        String tanggal = input.nextLine();
+                        queue.enqueue(name, tanggal);
+                        System.out.println("\n[V] Anda berhasil masuk ke dalam antrian!");
+                        System.out.println("    Tanggal tour: " + tanggal);
                         break;
                     case 3:
-                        // Kembali ke menu utama
                         break;
                     default:
-                        System.out.println("❌ Pilihan tidak valid");
+                        System.out.println("[X] Pilihan tidak valid");
                         break;
                 }
                 
             } else if (pilih == 4) {
-                // Mulai tour (Integrasi semua modul)
-                GNodeWisata tujuan;
-                GNodeKabupaten start = graph.firstKab; //ini harusnya mataram sih
+                // MULAI TOUR - IMPLEMENTASI LENGKAP
+                
+                if (queue.first == null) {
+                    System.out.println("\n[X] Tidak ada pengunjung dalam antrian!");
+                    System.out.println("    Silakan daftar antrian terlebih dahulu (Menu 3).");
+                    continue;
+                }
+                
                 queue.displayQueue();
+                System.out.print("\nProses pengunjung pertama? (Y/N): ");
+                String konfirmasi = input.nextLine();
+                
+                if (!konfirmasi.equalsIgnoreCase("Y")) {
+                    continue;
+                }
+                
                 QueueNode orang = queue.dequeue();
-                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                System.out.println("║             SELAMAT DATANG " + orang.pengunjung + "            ║");
-                System.out.println("║                 Lokasi: Kantor Tour Mataram           ║");
-                System.out.println("╚═══════════════════════════════════════════════════════╝\n");
-                do {
-                    System.out.println("[admin] : Mau kemana hari ini?");
-                    System.out.print("["+ orang.pengunjung +"] : "); 
-                    String t = input.nextLine();
-                    tujuan = search.searchByNama(graph, t);
-                    if (tujuan != null) {
-                        break;
-                    }else System.out.println("Maaf, tujuan yang anda cari belum terdaftar dalam sistem.");
-                } while (tujuan == null);
-                int pilihperjalanan;
-                do {
-                    //MULAI PERJALANAN DJIKSTRA & PRINT HASIL DJIKSTRA (yang dilewatin)
-                    System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                    System.out.println(" PERJALANAN DARI " + start.namaKabupaten +" MENUJU "+ tujuan.namaWisata);
-                    System.out.println("╠═══════════════════════════════════════════════════════╣");
-                    System.out.println("\n  JALANKAN DJIKSTRA DISINI");
-                    System.out.println("    DAN DISINI");
-                    System.out.println("╠═══════════════════════════════════════════════════════╣");
-                    System.out.println("║                 LANGKAH SELANJUTNYA                   ║");
-                    System.out.println("╠═══════════════════════════════════════════════════════╣");
-                    System.out.println("║1. Melanjutkan perjalanan menuju tujuan baru           ║"); //kalau dia pilih ini antara dia looping atau rekursif, ntahlah
-                    System.out.println("║2. Selesaikan perjalanan                               ║");
-                    System.out.println("╠═══════════════════════════════════════════════════════╣");
-                    do {
-                        System.out.print(" Pilihan: "); 
-                        pilihperjalanan = input.nextInt(); 
-                        input.nextLine();
+                
+                System.out.println("\n===========================================================");
+                System.out.println("         SELAMAT DATANG " + orang.pengunjung + "!");
+                System.out.println("         Lokasi: Kantor Tour Mataram");
+                System.out.println("         Tanggal Tour: " + orang.tanggalTour);
+                System.out.println("===========================================================");
+                
+                boolean lanjutTour = true;
+                String lokasiSekarang = "Mataram";
+                
+                while (lanjutTour) {
+                    GNodeWisata tujuan = null;
+                    String namaTujuan = "";
+                    
+                    while (tujuan == null) {
+                        System.out.println("\n[ LTG ]: Mau kemana hari ini?");
+                        System.out.println("         (Ketik nama wisata atau 'list' untuk lihat semua)");
+                        System.out.print("[" + orang.pengunjung + "]: ");
+                        namaTujuan = input.nextLine();
                         
-                        if (pilihperjalanan == 1) {
-                            do {
-                                System.out.println("[admin] : Mau melanjutkan perjalanan kemana?");
-                                System.out.print("["+ orang.pengunjung +"] : "); 
-                                String t = input.nextLine();
-                                tujuan = search.searchByNama(graph, t);
-                                if (tujuan != null) {
-                                    break;
-                                } else {
-                                    System.out.println("Maaf, tujuan yang anda cari belum terdaftar dalam sistem.");
-                                }
-                            } while (tujuan == null);
-                            break;
+                        if (namaTujuan.equalsIgnoreCase("list")) {
+                            displaySemuaWisata(graph);
+                            continue;
+                        }
+                        
+                        tujuan = search.searchByNama(graph, namaTujuan);
+                        
+                        if (tujuan == null) {
+                            System.out.println("[X] Maaf, tujuan \"" + namaTujuan + "\" belum terdaftar dalam sistem.");
+                            System.out.print("    Coba lagi? (Y/N): ");
+                            String coba = input.nextLine();
+                            if (!coba.equalsIgnoreCase("Y")) {
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (tujuan == null) {
+                        System.out.println("\n[Info] Tidak ada tujuan yang dipilih.");
+                        break;
+                    }
+                    
+                    String kabupatenTujuan = cariKabupatenDariWisata(graph, namaTujuan);
+                    
+                    if (kabupatenTujuan == null) {
+                        System.out.println("[X] Error: Tidak dapat menemukan kabupaten wisata ini!");
+                        continue;
+                    }
+                    
+                    System.out.println("\n-----------------------------------------------------------");
+                    System.out.println("[V] Wisata ditemukan: " + namaTujuan);
+                    System.out.println("    Lokasi: " + kabupatenTujuan);
+                    System.out.println("    Rating: " + tujuan.formatRating(tujuan.rating));
+                    System.out.println("-----------------------------------------------------------");
+                    
+                    System.out.print("\nKonfirmasi perjalanan ke " + namaTujuan + "? (Y/N): ");
+                    String konfirmasiJalan = input.nextLine();
+                    
+                    if (!konfirmasiJalan.equalsIgnoreCase("Y")) {
+                        continue;
+                    }
+                    
+                    // DIJKSTRA LAYER 1: KABUPATEN
+                    System.out.println("  [Info] Perjalanan dimulai...");
+                    System.out.println("\n[Sistem] Menghitung rute terbaik...\n");
+                    
+                    PathResult rutaKabupaten = graph.dijkstra(lokasiSekarang, kabupatenTujuan);
+                    
+                    if (!rutaKabupaten.found) {
+                        System.out.println("[X] Tidak dapat menemukan rute ke " + kabupatenTujuan);
+                        continue;
+                    }
+                    
+                    // DIJKSTRA LAYER 2: WISATA
+                    GNodeKabupaten kabNode = graph.getNode(kabupatenTujuan);
+                    
+                    if (kabNode == null) {
+                        System.out.println("[X] Error: Node kabupaten tidak ditemukan!");
+                        continue;
+                    }
+                    
+                    GNodeWisata entryWisata = kabNode.graphWisata.firstWisata;
+                    
+                    if (entryWisata == null) {
+                        System.out.println("[X] Kabupaten ini tidak memiliki wisata!");
+                        continue;
+                    }
+                    
+                    PathResult rutaWisata = kabNode.graphWisata.dijkstra(entryWisata.namaWisata, namaTujuan);
+                    
+                    if (!rutaWisata.found) {
+                        System.out.println("[X] Tidak dapat menemukan rute ke wisata " + namaTujuan);
+                        continue;
+                    }
+                    
+                    // DISPLAY RUTE (HANYA SEKALI!)
+                    displayRuteKabupaten(rutaKabupaten, lokasiSekarang, kabupatenTujuan);
+                    displayRuteWisata(rutaWisata, kabupatenTujuan);
+                    
+                    // SIMPAN KE LINKED LIST
+                    simpanJalurKeLinkedList(orang.jalur, rutaKabupaten, rutaWisata, kabupatenTujuan);
+                    
+                    
+                    System.out.println("\n===========================================================");
+                    System.out.println("  [V] Tiba di " + namaTujuan + "!");
+                    System.out.println("===========================================================");
+                    
+                    lokasiSekarang = kabupatenTujuan;
+                    
+                    // MENU SELANJUTNYA
+                    System.out.println("\n===========================================================");
+                    System.out.println("         ANDA SEKARANG DI " + namaTujuan.toUpperCase());
+                    System.out.println("===========================================================");
+                    System.out.println("         APA YANG INGIN ANDA LAKUKAN?");
+                    System.out.println("===========================================================");
+                    System.out.println("  1. Lanjut ke wisata lain");
+                    System.out.println("  2. Selesai tour (kembali ke Mataram)");
+                    System.out.println("===========================================================");
+                    System.out.print("Pilihan: ");
+                    int pilihNext = input.nextInt(); 
+                    input.nextLine();
+                    
+                    if (pilihNext == 2) {
+                        lanjutTour = false;
+                    }
+                }
+                
+                // SELESAI TOUR - REVIEW
+                System.out.println("\n===========================================================");
+                System.out.println("                TOUR SELESAI!");
+                System.out.println("===========================================================");
+                
+                orang.jalur.displayJalur();
+                
+                int jumlahWisata = orang.jalur.countWisataOnly();
+                
+                if (jumlahWisata > 0) {
+                    System.out.println("\n===========================================================");
+                    System.out.println("          BERIKAN RATING & KOMENTAR");
+                    System.out.println("===========================================================");
+                    System.out.print("Apakah Anda ingin memberikan review? (Y/N): ");
+                    String mauReview = input.nextLine();
+                    
+                    if (mauReview.equalsIgnoreCase("Y")) {
+                        LLNode current = orang.jalur.getWisataOnly();
+                        int num = 1;
+                        
+                        while (current != null) {
+                            System.out.println("\n===========================================================");
+                            System.out.println("  [" + num + "/" + jumlahWisata + "] " + current.lokasi);
+                            System.out.println("===========================================================");
                             
-                        } else if (pilihperjalanan == 2) {
-                            System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                            System.out.println("║          TERIMA KASIH SUDAH BERKUNJUNG!               ║");
-                            System.out.println("╠═══════════════════════════════════════════════════════╣");
-                            System.out.print("║ Apakah Anda ingin memberikan ulasan? (Y/N): ");
-                            String jawab = input.nextLine();
-                            
-                            if (jawab.equalsIgnoreCase("Y")) {
-                                // Display semua wisata yang dikunjungi dari LinkedList
-                                if (orang.jalur.head == null) {
-                                    System.out.println("║ Belum ada wisata yang dikunjungi.                    ║");
-                                } else {
-                                    System.out.println("╠═══════════════════════════════════════════════════════╣");
-                                    System.out.println("║        WISATA YANG TELAH ANDA KUNJUNGI:              ║");
-                                    System.out.println("╠═══════════════════════════════════════════════════════╣");
-                                    
-                                    // Display list wisata
-                                    GNodeWisata tempWis = orang.jalur.head;
-                                    int num = 1;
-                                    while (tempWis != null) {
-                                        System.out.println("║ " + num + ". " + tempWis.namaWisata);
-                                        tempWis = tempWis.next;
-                                        num++;
-                                    }
-                                    
-                                    System.out.println("╠═══════════════════════════════════════════════════════╣");
-                                    
-                                    // Loop untuk setiap wisata yang dikunjungi
-                                    tempWis = orang.jalur.head;
-                                    while (tempWis != null) {
-                                        System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                                        System.out.println("║ ULASAN UNTUK: " + tempWis.namaWisata);
-                                        System.out.println("╠═══════════════════════════════════════════════════════╣");
-                                        
-                                        // Input rating
-                                        int rating = 0;
-                                        do {
-                                            System.out.print("║ Rating (1-5): ");
-                                            rating = input.nextInt();
-                                            input.nextLine();
-                                            
-                                            if (rating < 1 || rating > 5) {
-                                                System.out.println("║ Rating harus antara 1-5!");
-                                            }
-                                        } while (rating < 1 || rating > 5);
-                                        
-                                        // Input komentar
-                                        System.out.print("║ Komentar: ");
-                                        String komentar = input.nextLine();
-                                        
-                                        String tanggal = "07-12-2024"; // Bisa diganti dengan tanggal real
-                                        
-                                        // Push ulasan ke Stack wisata
-                                        GNodeWisata wisataAsli = search.searchByNama(graph, tempWis.namaWisata);
-                                        if (wisataAsli != null) {
-                                            wisataAsli.ulasan.push(orang.pengunjung, rating, komentar, tanggal);
-                                            wisataAsli.updateRating();
-                                            System.out.println("║ Ulasan berhasil ditambahkan!");
-                                        }
-                                        
-                                        System.out.println("╚═══════════════════════════════════════════════════════╝");
-                                        
-                                        tempWis = tempWis.next;
-                                    }
-                                    
-                                    System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                                    System.out.println("║   TERIMA KASIH ATAS ULASAN ANDA!                      ║");
-                                    System.out.println("╚═══════════════════════════════════════════════════════╝");
+                            int rating = 0;
+                            while (rating < 1 || rating > 5) {
+                                System.out.print("  Rating (1-5): ");
+                                rating = input.nextInt(); 
+                                input.nextLine();
+                                if (rating < 1 || rating > 5) {
+                                    System.out.println("  [X] Rating harus antara 1-5!");
                                 }
                             }
                             
-                            System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                            System.out.println("║          SAMPAI JUMPA KEMBALI!                        ║");
-                            System.out.println("╚═══════════════════════════════════════════════════════╝");
-                            break;
+                            System.out.print("  Komentar: ");
+                            String komentar = input.nextLine();
                             
-                        } else {
-                            System.out.println("Pilihan tidak valid. Pilih 1 atau 2.");
+                            // PUSH LANGSUNG KE STACK WISATA
+                            GNodeWisata wisataNode = search.searchByNama(graph, current.lokasi);
+                            if (wisataNode != null) {
+                                wisataNode.ulasan.push(orang.pengunjung, rating, komentar, orang.tanggalTour);
+                                wisataNode.updateRating();
+                                System.out.println("  [V] Ulasan tersimpan dan sudah masuk ke sistem!");
+                            }
+                            
+                            current = current.next;
+                            num++;
                         }
-                    } while (pilihperjalanan != 1 && pilihperjalanan != 2);
-                    
-                } while (pilihperjalanan == 1);
+                        
+                        System.out.println("\n===========================================================");
+                        System.out.println("  [V] Semua ulasan berhasil disimpan!");
+                        System.out.println("      Ulasan Anda sudah bisa dilihat di Menu 2.");
+                        System.out.println("===========================================================");
+                    }
+                }
+                
+                System.out.println("\n===========================================================");
+                System.out.println("            TERIMA KASIH " + orang.pengunjung + "!");
+                System.out.println("           Tour selesai. Sampai jumpa!");
+                System.out.println("===========================================================");
                 
             } else if (pilih == 5) {
-                System.out.println("\n╔═══════════════════════════════════════════════════════╗");
-                System.out.println("║             TERIMA KASIH SUDAH BERKUNJUNG!            ║");
-                System.out.println("║                 Sampai jumpa kembali!                 ║");
-                System.out.println("╚═══════════════════════════════════════════════════════╝\n");
+                System.out.println("\n===========================================================");
+                System.out.println("         TERIMA KASIH SUDAH BERKUNJUNG!");
+                System.out.println("             Sampai jumpa kembali!");
+                System.out.println("===========================================================");
                 running = false;
                 
             } else {
-                System.out.println("Pilihan tidak valid. Silakan pilih 1-5.");
+                System.out.println("[X] Pilihan tidak valid. Silakan pilih 1-5.");
             }
         } while (running);
         

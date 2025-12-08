@@ -8,13 +8,11 @@ public class Stack {
     }
 
     public void push(String nama, int rating, String komentar, String tanggal) {
-        // Validasi rating
         if (rating < 1 || rating > 5) {
-            System.out.println("❌ Rating harus antara 1-5!");
+            System.out.println("[X] Rating harus antara 1-5!");
             return;
         }
         
-        // Buat node baru dengan indeks auto-increment
         StackNode newNode = new StackNode(nama, rating, komentar, tanggal, size + 1);
         newNode.next = top;
         top = newNode;
@@ -27,25 +25,41 @@ public class Stack {
             return;
         }
         
-        System.out.println("\n╔════════════════════════════════════════════╗");
-        System.out.println("║           SEMUA ULASAN (LIFO)             ║");
-        System.out.println("╠════════════════════════════════════════════╣");
+        System.out.println("\n===========================================================");
+        System.out.println("       SEMUA ULASAN (Terbaru-Terlama)");
+        System.out.println("===========================================================");
         
         StackNode current = top;
         while (current != null) {
-            System.out.print("[" + current.indeks + "] ");
+            System.out.print("  [" + current.indeks + "] ");
             for (int i = 0; i < current.rating; i++) {
-                System.out.print("⭐");
+                System.out.print("*");
             }
             System.out.println(" - " + current.namaPengunjung + " (" + current.tanggal + ")");
-            System.out.println("    \"" + current.komentar + "\"");
+            System.out.println("      \"" + current.komentar + "\"");
             System.out.println();
             current = current.next;
         }
         
-        System.out.println("╚════════════════════════════════════════════╝");
-        System.out.println("Total: " + size + " ulasan");
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("  Total: " + size + " ulasan");
+        System.out.println("===========================================================");
     }
+
+    public double roundTo(double value, int digits) {
+        double factor = 1;
+
+        // Kalikan 10 sesuai jumlah digit
+        for (int i = 0; i < digits; i++) {
+            factor *= 10;
+        }
+
+        // Proses pembulatan manual
+        int temp = (int) (value * factor + 0.5);
+
+        return (double) temp / factor;
+    }
+
 
     public double getAverageRating() {
         if (top == null) {
@@ -60,20 +74,12 @@ public class Stack {
             current = current.next;
         }
         
-        return (double) totalRating / size;
+        double avg = (double) totalRating / size;
+        return roundTo(avg, 2); // 2 = jumlah angka di belakang koma
     }
+
 
     public boolean isEmpty() {
         return top == null;
     }
-
-    public int getSize() {
-        return size;
-    }
-    
-    public StackNode getTop() {
-        return top;
-    }
 }
-
-// tes

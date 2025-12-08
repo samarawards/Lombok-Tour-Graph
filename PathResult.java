@@ -19,20 +19,19 @@ public class PathResult {
             System.out.println("║ Total Jarak: " + totalJarak + " km");
             System.out.println("╚════════════════════════════════════════════╝");
         } else {
-            System.out.println("\n❌ Rute tidak ditemukan!");
+            System.out.println("\n[X] Rute tidak ditemukan!");
         }
     }
     
-    // public void displaySimple() {
-    //     if (found) {
-    //         System.out.println("Rute: " + jalur);
-    //         System.out.println("Total Jarak: " + totalJarak + " km");
-    //     } else {
-    //         System.out.println("❌ Rute tidak ditemukan!");
-    //     }
-    // }
+    public void displaySimple() {
+        if (found) {
+            System.out.println("Rute: " + jalur);
+            System.out.println("Total Jarak: " + totalJarak + " km");
+        } else {
+            System.out.println("[X] Rute tidak ditemukan!");
+        }
+    }
     
-    // Getter methods
     public String getJalur() {
         return jalur;
     }

@@ -1,13 +1,13 @@
 public class QueueNode {
     String pengunjung;
-
+    String tanggalTour;
     QueueNode next;    
+    LinkedList jalur;
 
-    LinkedList jalur = new LinkedList();
-
-    public QueueNode (String pengunjung){
+    public QueueNode(String pengunjung, String tanggalTour) {
         this.pengunjung = pengunjung;
+        this.tanggalTour = tanggalTour;
         this.next = null;
+        this.jalur = new LinkedList();
     }
-
 }

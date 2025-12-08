@@ -1,19 +1,17 @@
-import org.w3c.dom.Node;
-
 public class GNodeWisata {
     String namaWisata;
     String deskripsi;
-    String jenis; // pantai, air terjun, bukit, desa wisata, pulau, dll
-    double rating; // Rata-rata rating dari Stack ulasan
+    String jenis;
+    double rating;
     
-    boolean visited; // Untuk Dijkstra
-    float dist; // Distance dari start (untuk Dijkstra)
-    GNodeWisata prev; // Previous node dalam shortest path
+    boolean visited;
+    float dist;
+    GNodeWisata prev;
     
-    GEdgeWisata firstEdgeWis; // Head linked list edges
-    GNodeWisata next; // Next wisata dalam linked list graph
+    GEdgeWisata firstEdgeWis;
+    GNodeWisata next;
     
-    Stack ulasan; // Nested stack untuk review pengunjung
+    Stack ulasan;
 
     public GNodeWisata(String namaWisata) {
         this.namaWisata = namaWisata;
@@ -25,10 +23,9 @@ public class GNodeWisata {
         this.prev = null;
         this.firstEdgeWis = null;
         this.next = null;
-        this.ulasan = new Stack(); // Init stack ulasan
+        this.ulasan = new Stack();
     }
     
-    // Constructor dengan deskripsi dan jenis
     public GNodeWisata(String namaWisata, String deskripsi, String jenis) {
         this.namaWisata = namaWisata;
         this.deskripsi = deskripsi;
@@ -61,87 +58,23 @@ public class GNodeWisata {
     }
     
     public void displayInfo() {
-        System.out.println("╔════════════════════════════════════════════╗");
-        System.out.println("║           DETAIL WISATA                    ║");
-        System.out.println("╠════════════════════════════════════════════╣");
+        System.out.println("===========================================================");
+        System.out.println("           DETAIL WISATA");
+        System.out.println("===========================================================");
         System.out.println("  Nama      : " + namaWisata);
         System.out.println("  Jenis     : " + jenis);
-        System.out.println("  Rating    : " + formatRating(rating) + " (" + ulasan.getSize() + " ulasan)");
+        System.out.println("  Rating    : " + formatRating(rating) + " (" + ulasan.size + " ulasan)");
         System.out.println("  Deskripsi : " + deskripsi);
-        System.out.println("╚════════════════════════════════════════════╝");
+        System.out.println("===========================================================");
     }
     
     public String formatRating(double rating) {
         String result = "";
         int fullStars = (int) rating;
         for (int i = 0; i < fullStars; i++) {
-            result += "⭐";
+            result += "*";
         }
         result += " " + rating;
         return result;
-    }
-    
-    public String getNamaWisata() {
-        return namaWisata;
-    }
-    
-    public String getDeskripsi() {
-        return deskripsi;
-    }
-    
-    public void setDeskripsi(String deskripsi) {
-        this.deskripsi = deskripsi;
-    }
-    
-    public String getJenis() {
-        return jenis;
-    }
-    
-    public void setJenis(String jenis) {
-        this.jenis = jenis;
-    }
-    
-    public double getRating() {
-        return rating;
-    }
-    
-    public Stack getUlasan() {
-        return ulasan;
-    }
-    
-    public GEdgeWisata getFirstEdge() {
-        return firstEdgeWis;
-    }
-    
-    public GNodeWisata getNext() {
-        return next;
-    }
-    
-    public void setNext(GNodeWisata next) {
-        this.next = next;
-    }
-    
-    public boolean isVisited() {
-        return visited;
-    }
-    
-    public void setVisited(boolean visited) {
-        this.visited = visited;
-    }
-    
-    public float getDist() {
-        return dist;
-    }
-    
-    public void setDist(float dist) {
-        this.dist = dist;
-    }
-    
-    public GNodeWisata getPrev() {
-        return prev;
-    }
-    
-    public void setPrev(GNodeWisata prev) {
-        this.prev = prev;
     }
 }

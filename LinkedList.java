@@ -1,8 +1,8 @@
 public class LinkedList {
-    GNodeWisata head;
-    GNodeWisata tail;
+    LLNode head;
+    LLNode tail;
     float totalJarak;
-    int size; 
+    int size;
 
     public LinkedList() {
         this.head = null;
@@ -11,59 +11,53 @@ public class LinkedList {
         this.size = 0;
     }
 
-    public void addTail(GNodeWisata newNode){
+    public void addLokasi(String lokasi, String jenis, float jarak) {
+        LLNode newNode = new LLNode(lokasi, jenis, jarak);
+        
         if (head == null) {
-            head = newNode;
-        }else{
+            head = tail = newNode;
+        } else {
             tail.next = newNode;
+            tail = newNode;
         }
-        tail = newNode;
+        
+        totalJarak += jarak;
+        size++;
     }
 
-    // public void addLokasi(String lokasi, String jenis, float jarak) {
-    //     GNodeWisata newNode = new GNodeWisata(lokasi, jenis, jarak);
-        
-    //     if (head == null) {
-    //         head = tail = newNode;
-    //         System.out.println("Berangkat dari " + lokasi + "...");
-    //     } else {
-    //         tail.next = newNode;
-    //         tail = newNode;
-    //         System.out.println("Melewati " + lokasi + " (" + jarak + " km)");
-    //     }
-        
-    //     totalJarak += jarak;
-    //     size++;
-    // }
-
-    public void displayLinkedList() {
+    public void displayJalur() {
         if (head == null) {
-            System.out.println("List perjalanan kosong.");
+            System.out.println("Belum ada perjalanan.");
             return;
         }
         
-        System.out.println("\n╔════════════════════════════════════════════╗");
-        System.out.println("║        HISTORY PERJALANAN                  ║");
-        System.out.println("╠════════════════════════════════════════════╣");
+        System.out.println("\n===========================================================");
+        System.out.println("        RINGKASAN PERJALANAN LENGKAP");
+        System.out.println("===========================================================");
         
-        GNodeWisata current = head;
+        LLNode current = head;
         int num = 1;
         
         while (current != null) {
-            System.out.println("  " + num + ". " + " (" + current.dist + " km) [" + current.jenis + "]");
+            if (current.jenis.equalsIgnoreCase("Kabupaten")) {
+                System.out.println("  " + num + ". " + current.lokasi + " (" + current.jarak + " km)");
+            } else {
+                System.out.println("  " + num + ". " + current.lokasi + " [" + current.jenis + "] (" + current.jarak + " km)");
+            }
+            
             current = current.next;
             num++;
         }
         
-        System.out.println("╠════════════════════════════════════════════╣");
-        System.out.println("║ Total Jarak: " + totalJarak + " km");
-        System.out.println("║ Total Lokasi: " + size + " tempat");
-        System.out.println("╚════════════════════════════════════════════╝");
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("  Total Jarak Tempuh: " + totalJarak + " km");
+        System.out.println("  Total Lokasi Dikunjungi: " + size + " tempat");
+        System.out.println("===========================================================");
     }
 
     public int countWisataOnly() {
         int count = 0;
-        GNodeWisata current = head;
+        LLNode current = head;
         
         while (current != null) {
             if (!current.jenis.equalsIgnoreCase("Kabupaten")) {
@@ -75,36 +69,27 @@ public class LinkedList {
         return count;
     }
 
-    // public GNodeWisata getWisataOnly() {
-    //     GNodeWisata wisataHead = null;
-    //     GNodeWisata wisataTail = null;
+    public LLNode getWisataOnly() {
+        LLNode wisataHead = null;
+        LLNode wisataTail = null;
         
-    //     GNodeWisata current = head;
+        LLNode current = head;
         
-    //     while (current != null) {
-    //         if (!current.jenis.equalsIgnoreCase("Kabupaten")) {
-    //             // Clone node wisata
-    //             GNodeWisata clone = new GNodeWisata(current.lokasi, current.jenis, current.jarak);
+        while (current != null) {
+            if (!current.jenis.equalsIgnoreCase("Kabupaten")) {
+                LLNode clone = new LLNode(current.lokasi, current.jenis, current.jarak);
                 
-    //             if (wisataHead == null) {
-    //                 wisataHead = clone;
-    //                 wisataTail = clone;
-    //             } else {
-    //                 wisataTail.next = clone;
-    //                 wisataTail = clone;
-    //             }
-    //         }
-    //         current = current.next;
-    //     }
+                if (wisataHead == null) {
+                    wisataHead = clone;
+                    wisataTail = clone;
+                } else {
+                    wisataTail.next = clone;
+                    wisataTail = clone;
+                }
+            }
+            current = current.next;
+        }
         
-    //     return wisataHead;
-    // }
-
-    public float getTotalJarak() {
-        return totalJarak;
-    }
-
-    public GNodeWisata getHead() {
-        return head;
+        return wisataHead;
     }
 }

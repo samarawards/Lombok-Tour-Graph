@@ -1,6 +1,6 @@
 public class GraphWisata {
     GNodeWisata firstWisata; 
-    String namaKabupaten; // Kabupaten pemilik graph ini
+    String namaKabupaten;
     int size; 
 
     public GraphWisata() {
@@ -26,7 +26,7 @@ public class GraphWisata {
         return null;
     }
 
-    private GNodeWisata addWisata(String wisata) {
+    public GNodeWisata addWisata(String wisata) {
         GNodeWisata existing = getNode(wisata);
         if (existing != null) return existing;
 
@@ -40,9 +40,8 @@ public class GraphWisata {
     public GNodeWisata addWisataWithInfo(String nama, String deskripsi, String jenis) {
         GNodeWisata existing = getNode(nama);
         if (existing != null) {
-            // Update info jika sudah ada
-            existing.setDeskripsi(deskripsi);
-            existing.setJenis(jenis);
+            existing.deskripsi = deskripsi;
+            existing.jenis = jenis;
             return existing;
         }
 
@@ -75,9 +74,9 @@ public class GraphWisata {
             return;
         }
         
-        System.out.println("\n╔════════════════════════════════════════════╗");
-        System.out.println("║  WISATA DI " + namaKabupaten.toUpperCase());
-        System.out.println("╠════════════════════════════════════════════╣");
+        System.out.println("\n===========================================================");
+        System.out.println("  WISATA DI " + namaKabupaten.toUpperCase());
+        System.out.println("===========================================================");
         
         GNodeWisata current = firstWisata;
         int num = 1;
@@ -88,19 +87,18 @@ public class GraphWisata {
                 stars += "*";
             }
             
-            System.out.println(num + ". " + current.namaWisata + " (" + current.jenis + ") " + stars + " " + current.rating);
+            System.out.println("  " + num + ". " + current.namaWisata + " (" + current.jenis + ") " + stars + " " + current.rating);
             current = current.next;
             num++;
         }
-        System.out.println("╚════════════════════════════════════════════╝");
-        System.out.println("Total: " + size + " wisata");
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("  Total: " + size + " wisata");
+        System.out.println("===========================================================");
     }
     
     public PathResult dijkstra(String start, String goal) {
-        // Reset graph
         resetGraph();
         
-        // Cari node start dan goal
         GNodeWisata startNode = getNode(start);
         GNodeWisata goalNode = getNode(goal);
         
@@ -108,55 +106,49 @@ public class GraphWisata {
             return new PathResult("", 0, false);
         }
         
-        // Set distance start = 0
-        startNode.setDist(0);
+        if (startNode == goalNode) {
+            return new PathResult(start, 0, true);
+        }
         
-        // Loop sampai semua node visited
+        startNode.dist = 0;
+        
         int visitedCount = 0;
         while (visitedCount < size) {
-            // Cari node unvisited dengan distance terkecil
             GNodeWisata minNode = findMinDistanceNode();
-            if (minNode == null) break; // Semua node sudah visited atau unreachable
+            if (minNode == null) break;
             
-            // Mark visited
-            minNode.setVisited(true);
+            minNode.visited = true;
             visitedCount++;
             
-            // Jika sudah sampai goal, bisa stop
             if (minNode == goalNode) break;
             
-            // Update distance tetangga
-            GEdgeWisata edge = minNode.getFirstEdge();
+            GEdgeWisata edge = minNode.firstEdgeWis;
             while (edge != null) {
-                GNodeWisata neighbor = edge.getDestination();
-                if (!neighbor.isVisited()) {
-                    float newDist = minNode.getDist() + edge.getWeight();
-                    if (newDist < neighbor.getDist()) {
-                        neighbor.setDist(newDist);
-                        neighbor.setPrev(minNode);
+                GNodeWisata neighbor = edge.toWisata;
+                if (!neighbor.visited) {
+                    float newDist = minNode.dist + edge.weight;
+                    if (newDist < neighbor.dist) {
+                        neighbor.dist = newDist;
+                        neighbor.prev = minNode;
                     }
                 }
-                edge = edge.getNext();
+                edge = edge.next;
             }
         }
         
-        // Reconstruct path dari goal ke start
-        if (goalNode.getDist() == Float.MAX_VALUE) {
-            // Goal unreachable
+        if (goalNode.dist == Float.MAX_VALUE) {
             return new PathResult("", 0, false);
         }
         
-        // Build path menggunakan linked list manual (TANPA ARRAY!)
         String jalur = "";
-        float totalJarak = goalNode.getDist();
+        float totalJarak = goalNode.dist;
         
-        // Reconstruct dari goal ke start
         GNodeWisata current = goalNode;
-        String pathReverse = current.getNamaWisata();
+        String pathReverse = current.namaWisata;
         
-        while (current.getPrev() != null) {
-            current = current.getPrev();
-            pathReverse = current.getNamaWisata() + " → " + pathReverse;
+        while (current.prev != null) {
+            current = current.prev;
+            pathReverse = current.namaWisata + " -> " + pathReverse;
         }
         
         jalur = pathReverse;
@@ -164,14 +156,14 @@ public class GraphWisata {
         return new PathResult(jalur, totalJarak, true);
     }
     
-    private GNodeWisata findMinDistanceNode() {
+    public GNodeWisata findMinDistanceNode() {
         GNodeWisata current = firstWisata;
         GNodeWisata minNode = null;
         float minDist = Float.MAX_VALUE;
         
         while (current != null) {
-            if (!current.isVisited() && current.getDist() < minDist) {
-                minDist = current.getDist();
+            if (!current.visited && current.dist < minDist) {
+                minDist = current.dist;
                 minNode = current;
             }
             current = current.next;
@@ -180,23 +172,7 @@ public class GraphWisata {
         return minNode;
     }
     
-    public int countWisata() {
-        return size;
-    }
-    
     public boolean isEmpty() {
         return firstWisata == null;
-    }
-    
-    public GNodeWisata getFirstWisata() {
-        return firstWisata;
-    }
-    
-    public String getNamaKabupaten() {
-        return namaKabupaten;
-    }
-    
-    public void setNamaKabupaten(String namaKabupaten) {
-        this.namaKabupaten = namaKabupaten;
     }
 }
