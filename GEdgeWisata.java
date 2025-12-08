@@ -11,21 +11,4 @@ public class GEdgeWisata {
         this.weight = weight;
         this.next = null;
     }
-    
-    // Getter methods
-    public GNodeWisata getDestination() {
-        return toWisata;
-    }
-    
-    public float getWeight() {
-        return weight;
-    }
-    
-    public GEdgeWisata getNext() {
-        return next;
-    }
-    
-    public void setNext(GEdgeWisata next) {
-        this.next = next;
-    }
 }
