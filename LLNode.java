@@ -10,4 +10,9 @@ public class LLNode {
         this.jarak = jarak;
         this.next = null;
     }
+
+    public LLNode(String lokasi) {
+        this.lokasi = lokasi;
+        this.next = null;
+    }
 }

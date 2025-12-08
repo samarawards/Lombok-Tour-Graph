@@ -11,6 +11,17 @@ public class LinkedList {
         this.size = 0;
     }
 
+    public void addTujuanOnly(String lokasi){
+        LLNode newNode = new LLNode(lokasi);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
+    }
+
     public void addLokasi(String lokasi, String jenis, float jarak) {
         LLNode newNode = new LLNode(lokasi, jenis, jarak);
         

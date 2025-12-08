@@ -1,59 +1,34 @@
 public class SearchEngine {
   
     public GNodeWisata searchByNama(GraphKabupaten graph, String keyword) {
-        graph.resetGraph();
         GNodeKabupaten tempKab = graph.firstKab;
         while (tempKab != null) {
-            tempKab.graphWisata.resetGraph();
-            tempKab = tempKab.next;
-        }
-        tempKab = graph.firstKab;
-        while (tempKab != null) {
-            while ((!tempKab.visited)) {
-                tempKab.visited = true;
-                GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
-                while (tempWis != null) {
-                    while (!tempWis.visited) {
-                        tempWis.visited = true;
-                        if (tempWis.namaWisata.equalsIgnoreCase(keyword)) {
-                            return tempWis;
-                        }
-                    }
-                    tempWis = tempWis.next;
+            GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
+            while (tempWis != null) {
+                if (tempWis.namaWisata.equalsIgnoreCase(keyword)) {
+                    return tempWis;
                 }
+                tempWis = tempWis.next;
             }
             tempKab = tempKab.next;
-        }
+        }        
         return null;
     }
     
     public void searchByJenis(GraphKabupaten graph, String jenis) {
         int num = 1;
-        graph.resetGraph();
         GNodeKabupaten tempKab = graph.firstKab;
         while (tempKab != null) {
-            tempKab.graphWisata.resetGraph();
-            tempKab = tempKab.next;
-        }
-        tempKab = graph.firstKab;
-        while (tempKab != null) {
-            while (!tempKab.visited) {
-                tempKab.visited = true;
-                GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
-                while (tempWis != null) {
-                    while (!tempWis.visited) {
-                        tempWis.visited = true;
-                        if (tempWis.jenis.equalsIgnoreCase(jenis)) {
-                            System.out.println("  " + num + ". " + tempWis.namaWisata);
-                            num++;
-                        }
-                    }
-                    tempWis = tempWis.next;
+            GNodeWisata tempWis = tempKab.graphWisata.firstWisata;
+            while (tempWis != null) {
+                if (tempWis.jenis.equalsIgnoreCase(jenis)) {
+                    System.out.println("  " + num + ". " + tempWis.namaWisata);
+                    num++;
                 }
+                tempWis = tempWis.next;
             }
             tempKab = tempKab.next;
-        }
-        
+        }        
         if (num == 1) {
             System.out.println("  [X] Tidak ada wisata dengan jenis \"" + jenis + "\"");
         }
@@ -71,13 +46,10 @@ public class SearchEngine {
                     System.out.println("  " + num + ". " + currentWis.namaWisata + " (" + currentWis.formatRating(currentWis.rating) + ")");
                     num++;
                 }
-                
                 currentWis = currentWis.next;
             }
-            
             currentKab = currentKab.next;
         }
-        
         if (num == 1) {
             System.out.println("  [X] Tidak ada wisata dengan rating >= " + minRating);
         }

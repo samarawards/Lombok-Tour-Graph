@@ -453,6 +453,7 @@ public class Main {
                 System.out.println("         Tanggal Tour: " + orang.tanggalTour);
                 System.out.println("===========================================================");
                 
+                LinkedList finalTujuan = new LinkedList();
                 boolean lanjutTour = true;
                 String lokasiSekarang = "Mataram";
                 
@@ -503,10 +504,11 @@ public class Main {
                     
                     System.out.print("\nKonfirmasi perjalanan ke " + namaTujuan + "? (Y/N): ");
                     String konfirmasiJalan = input.nextLine();
-                    
+
                     if (!konfirmasiJalan.equalsIgnoreCase("Y")) {
                         continue;
                     }
+                    finalTujuan.addTujuanOnly(namaTujuan);
                     
                     // DIJKSTRA LAYER 1: KABUPATEN
                     System.out.println("  [Info] Perjalanan dimulai...");
@@ -580,7 +582,8 @@ public class Main {
                 
                 orang.jalur.displayJalur();
                 
-                int jumlahWisata = orang.jalur.countWisataOnly();
+                int jumlahWisata = finalTujuan.size;
+                System.out.println(finalTujuan.head.lokasi);
                 
                 if (jumlahWisata > 0) {
                     System.out.println("\n===========================================================");
@@ -590,7 +593,7 @@ public class Main {
                     String mauReview = input.nextLine();
                     
                     if (mauReview.equalsIgnoreCase("Y")) {
-                        LLNode current = orang.jalur.getWisataOnly();
+                        LLNode current = finalTujuan.head;
                         int num = 1;
                         
                         while (current != null) {
