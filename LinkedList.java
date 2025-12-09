@@ -66,41 +66,4 @@ public class LinkedList {
         System.out.println("===========================================================");
     }
 
-    public int countWisataOnly() {
-        int count = 0;
-        LLNode current = head;
-        
-        while (current != null) {
-            if (!current.jenis.equalsIgnoreCase("Kabupaten")) {
-                count++;
-            }
-            current = current.next;
-        }
-        
-        return count;
-    }
-
-    public LLNode getWisataOnly() {
-        LLNode wisataHead = null;
-        LLNode wisataTail = null;
-        
-        LLNode current = head;
-        
-        while (current != null) {
-            if (!current.jenis.equalsIgnoreCase("Kabupaten")) {
-                LLNode clone = new LLNode(current.lokasi, current.jenis, current.jarak);
-                
-                if (wisataHead == null) {
-                    wisataHead = clone;
-                    wisataTail = clone;
-                } else {
-                    wisataTail.next = clone;
-                    wisataTail = clone;
-                }
-            }
-            current = current.next;
-        }
-        
-        return wisataHead;
-    }
 }
