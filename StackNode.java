@@ -24,35 +24,4 @@ public class StackNode {
         System.out.println(" - " + namaPengunjung + " (" + tanggal + ")");
         System.out.println("    \"" + komentar + "\"");
     }
-    
-    // Getter methods (untuk sorting)
-    public String getNamaPengunjung() {
-        return namaPengunjung;
-    }
-    
-    public int getRating() {
-        return rating;
-    }
-    
-    public String getKomentar() {
-        return komentar;
-    }
-    
-    public String getTanggal() {
-        return tanggal;
-    }
-    
-    public int getIndeks() {
-        return indeks;
-    }
-    
-    public StackNode getNext() {
-        return next;
-    }
-    
-    public void setNext(StackNode next) {
-        this.next = next;
-    }
 }
-
-// tes
