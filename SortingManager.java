@@ -6,31 +6,32 @@ public class SortingManager {
             return;
         }
         
-        StackNode head = cloneStackToLinkedList(stack);
+        LLNode head = cloneStackToLLNode(stack);
         head = bubbleSortByRating(head, tinggiKeLow);
         displaySorted(head, "RATING", tinggiKeLow ? "TERTINGGI -> TERENDAH" : "TERENDAH -> TERTINGGI");
     }
     
     public static void sortUlasanByIndeks(Stack stack, boolean pertamaKeLast) {
         if (stack == null || stack.isEmpty()) {
+            
             System.out.println("[X] Tidak ada ulasan untuk di-sort.");
             return;
         }
         
-        StackNode head = cloneStackToLinkedList(stack);
+        LLNode head = cloneStackToLLNode(stack);
         head = bubbleSortByIndeks(head, pertamaKeLast);
         displaySorted(head, "URUTAN", pertamaKeLast ? "PERTAMA -> TERAKHIR" : "TERAKHIR -> PERTAMA");
     }
     
-    private static StackNode cloneStackToLinkedList(Stack stack) {
+    public static LLNode cloneStackToLLNode(Stack stack) {
         if (stack.isEmpty()) return null;
         
-        StackNode head = null;
-        StackNode tail = null;
+        LLNode head = null;
+        LLNode tail = null;
         
         StackNode current = stack.top;
         while (current != null) {
-            StackNode clone = new StackNode(
+            LLNode clone = new LLNode(
                 current.namaPengunjung,
                 current.rating,
                 current.komentar,
@@ -52,14 +53,14 @@ public class SortingManager {
         return head;
     }
     
-    private static StackNode bubbleSortByRating(StackNode head, boolean tinggiKeLow) {
+    public static LLNode bubbleSortByRating(LLNode head, boolean tinggiKeLow) {
         if (head == null || head.next == null) return head;
         
         int panjang = hitungPanjang(head);
         
         for (int i = 0; i < panjang - 1; i++) {
-            StackNode current = head;
-            StackNode prev = null;
+            LLNode current = head;
+            LLNode prev = null;
             
             for (int j = 0; j < panjang - i - 1; j++) {
                 if (current.next == null) break;
@@ -76,7 +77,7 @@ public class SortingManager {
                 }
                 
                 if (perluTukar) {
-                    StackNode nextNode = current.next;
+                    LLNode nextNode = current.next;
                     current.next = nextNode.next;
                     nextNode.next = current;
                     
@@ -97,14 +98,14 @@ public class SortingManager {
         return head;
     }
     
-    private static StackNode bubbleSortByIndeks(StackNode head, boolean pertamaKeLast) {
+    public static LLNode bubbleSortByIndeks(LLNode head, boolean pertamaKeLast) {
         if (head == null || head.next == null) return head;
         
         int panjang = hitungPanjang(head);
         
         for (int i = 0; i < panjang - 1; i++) {
-            StackNode current = head;
-            StackNode prev = null;
+            LLNode current = head;
+            LLNode prev = null;
             
             for (int j = 0; j < panjang - i - 1; j++) {
                 if (current.next == null) break;
@@ -121,7 +122,7 @@ public class SortingManager {
                 }
                 
                 if (perluTukar) {
-                    StackNode nextNode = current.next;
+                    LLNode nextNode = current.next;
                     current.next = nextNode.next;
                     nextNode.next = current;
                     
@@ -142,17 +143,17 @@ public class SortingManager {
         return head;
     }
     
-    private static void displaySorted(StackNode head, String kriteria, String urutan) {
+    public static void displaySorted(LLNode head, String kriteria, String urutan) {
         System.out.println("\n===========================================================");
         System.out.println("   ULASAN TERURUT BY " + kriteria);
         System.out.println("   (" + urutan + ")");
         System.out.println("===========================================================");
         
-        StackNode current = head;
+        LLNode current = head;
         while (current != null) {
             System.out.print("  [" + current.indeks + "] ");
             for (int i = 0; i < current.rating; i++) {
-                System.out.print("*");
+                System.out.print("⭐");
             }
             System.out.println(" - " + current.namaPengunjung + " (" + current.tanggal + ")");
             System.out.println("      \"" + current.komentar + "\"");
@@ -163,9 +164,9 @@ public class SortingManager {
         System.out.println("===========================================================");
     }
     
-    private static int hitungPanjang(StackNode head) {
+    public static int hitungPanjang(LLNode head) {
         int jumlah = 0;
-        StackNode current = head;
+        LLNode current = head;
         
         while (current != null) {
             jumlah++;

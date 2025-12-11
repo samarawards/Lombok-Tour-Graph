@@ -43,7 +43,7 @@ public class Main {
         gKab.addJalurKab("Lombok Tengah", "Lombok Utara", 50f);
 
         gKab.addJalurKab("Lombok Utara", "Lombok Timur", 70f);
-        
+
         GNodeKabupaten lombokBarat1 = gKab.getNode("Lombok Barat 1");
         if (lombokBarat1 != null) {
             DataWisata.setupWisataLombokBarat1(lombokBarat1.graphWisata);

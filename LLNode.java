@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class LLNode {
     String lokasi;
     String jenis;
@@ -13,6 +15,22 @@ public class LLNode {
 
     public LLNode(String lokasi) {
         this.lokasi = lokasi;
+        this.next = null;
+    }
+
+    
+    String namaPengunjung;
+    int rating;
+    String komentar;
+    String tanggal;
+    int indeks;
+    
+    public LLNode(String nama, int rating, String komentar, String tanggal, int indeks) {
+        this.namaPengunjung = nama;
+        this.rating = rating;
+        this.komentar = komentar;
+        this.tanggal = tanggal;
+        this.indeks = indeks;
         this.next = null;
     }
 }

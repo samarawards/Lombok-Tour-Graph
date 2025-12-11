@@ -72,7 +72,7 @@ public class GNodeWisata {
         String result = "";
         int fullStars = (int) rating;
         for (int i = 0; i < fullStars; i++) {
-            result += "*";
+            result += "⭐";
         }
         result += " " + rating;
         return result;

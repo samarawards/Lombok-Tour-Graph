@@ -4,7 +4,6 @@ public class StackNode {
     String komentar;
     String tanggal;      // Format: "DD-MM-YYYY"
     int indeks;          // Urutan komentar (1, 2, 3, ...)
-    
     StackNode next;      // Pointer ke node berikutnya dalam stack
 
     public StackNode(String nama, int rating, String komentar, String tanggal, int indeks) {

@@ -65,5 +65,4 @@ public class LinkedList {
         System.out.println("  Total Lokasi Dikunjungi: " + size + " tempat");
         System.out.println("===========================================================");
     }
-
 }

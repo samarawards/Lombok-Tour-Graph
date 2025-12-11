@@ -84,7 +84,7 @@ public class GraphWisata {
             String stars = "";
             int fullStars = (int) current.rating;
             for (int i = 0; i < fullStars; i++) {
-                stars += "*";
+                stars += "⭐";
             }
             
             System.out.println("  " + num + ". " + current.namaWisata + " (" + current.jenis + ") " + stars + " " + current.rating);

@@ -33,7 +33,7 @@ public class Stack {
         while (current != null) {
             System.out.print("  [" + current.indeks + "] ");
             for (int i = 0; i < current.rating; i++) {
-                System.out.print("*");
+                System.out.print("⭐");
             }
             System.out.println(" - " + current.namaPengunjung + " (" + current.tanggal + ")");
             System.out.println("      \"" + current.komentar + "\"");

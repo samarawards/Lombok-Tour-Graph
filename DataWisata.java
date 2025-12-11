@@ -310,7 +310,17 @@ public class DataWisata {
             "Kebun stroberi petik sendiri dengan udara sejuk pegunungan", 
             "Kebun Wisata"
         );
-        
+
+        // tambah titik point
+        graph.addJalurWisata("Check Point Lotim", "Bukit Pergasingan", 28.0f);
+        graph.addJalurWisata("Check Point Lotim", "Sembalun", 20.0f);
+        graph.addJalurWisata("Check Point Lotim", "Air Terjun Jeruk Manis", 50.0f);
+        graph.addJalurWisata("Check Point Lotim", "Pantai Pink", 95.0f);
+        graph.addJalurWisata("Check Point Lotim", "Gili Pasir", 80.0f);
+        graph.addJalurWisata("Check Point Lotim", "Savana Sembalun", 22.0f);
+        graph.addJalurWisata("Check Point Lotim", "Kebun Stroberi Sembalun", 21.0f);
+        graph.addJalurWisata("Check Point Lotim", "Gunung Rinjani", 21.0f);
+
         graph.addJalurWisata("Gunung Rinjani", "Bukit Pergasingan", 18.0f);
         graph.addJalurWisata("Gunung Rinjani", "Sembalun", 10.0f);
         graph.addJalurWisata("Gunung Rinjani", "Air Terjun Jeruk Manis", 40.0f);
