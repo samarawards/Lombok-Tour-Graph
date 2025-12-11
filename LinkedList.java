@@ -4,6 +4,7 @@ public class LinkedList {
     float totalJarak;
     int size;
 
+    // test
     public LinkedList() {
         this.head = null;
         this.tail = null;
