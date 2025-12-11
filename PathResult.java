@@ -31,16 +31,4 @@ public class PathResult {
             System.out.println("[X] Rute tidak ditemukan!");
         }
     }
-    
-    public String getJalur() {
-        return jalur;
-    }
-    
-    public float getTotalJarak() {
-        return totalJarak;
-    }
-    
-    public boolean isFound() {
-        return found;
-    }
 }

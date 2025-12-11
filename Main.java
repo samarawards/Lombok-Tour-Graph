@@ -583,7 +583,6 @@ public class Main {
                 orang.jalur.displayJalur();
                 
                 int jumlahWisata = finalTujuan.size;
-                System.out.println(finalTujuan.head.lokasi);
                 
                 if (jumlahWisata > 0) {
                     System.out.println("\n===========================================================");
