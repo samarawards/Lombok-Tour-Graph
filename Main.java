@@ -84,16 +84,21 @@ public class Main {
         System.out.println("           SEMUA WISATA DI PULAU LOMBOK");
         System.out.println("===========================================================");
         
-        String[] kabupatenList = {
-            "Lombok Barat 1", "Lombok Barat 2", "Lombok Barat 3",
-            "Lombok Tengah", "Lombok Timur", "Lombok Utara"
-        };
-        
-        for (int i = 0; i < kabupatenList.length; i++) {
-            GNodeKabupaten kab = graph.getNode(kabupatenList[i]);
+        LinkedList kabupatenList = new LinkedList();
+        kabupatenList.addKabupaten("Lombok Barat 1");
+        kabupatenList.addKabupaten("Lombok Barat 2");
+        kabupatenList.addKabupaten("Lombok Barat 3");
+        kabupatenList.addKabupaten("Lombok Tengah ");
+        kabupatenList.addKabupaten("Lombok Timur");
+        kabupatenList.addKabupaten("Lombok Utara");
+
+        LLNode current = kabupatenList.head;
+        while (current.next != null) {
+            GNodeKabupaten kab = graph.getNode(current.lokasi);
             if (kab != null && !kab.graphWisata.isEmpty()) {
                 kab.graphWisata.displayWisata();
             }
+            current = current.next;
         }
     }
     

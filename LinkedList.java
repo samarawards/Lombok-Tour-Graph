@@ -22,6 +22,16 @@ public class LinkedList {
         }
         size++;
     }
+    
+    public void addKabupaten(String kabupaten){
+        LLNode newNode = new LLNode(kabupaten, "-", 0f);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
 
     public void addLokasi(String lokasi, String jenis, float jarak) {
         LLNode newNode = new LLNode(lokasi, jenis, jarak);
@@ -36,6 +46,8 @@ public class LinkedList {
         totalJarak += jarak;
         size++;
     }
+
+
 
     public void displayJalur() {
         if (head == null) {
