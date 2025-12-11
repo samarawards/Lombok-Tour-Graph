@@ -2,12 +2,6 @@ public class GraphWisata {
     GNodeWisata firstWisata; 
     String namaKabupaten;
     int size; 
-
-    public GraphWisata() {
-        this.firstWisata = null;
-        this.namaKabupaten = "";
-        this.size = 0;
-    }
     
     public GraphWisata(String namaKabupaten) {
         this.firstWisata = null;

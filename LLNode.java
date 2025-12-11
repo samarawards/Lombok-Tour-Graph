@@ -11,11 +11,6 @@ public class LLNode {
         this.next = null;
     }
 
-    public LLNode(String lokasi) {
-        this.lokasi = lokasi;
-        this.next = null;
-    }
-
     
     String namaPengunjung;
     int rating;

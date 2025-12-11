@@ -12,7 +12,7 @@ public class LinkedList {
     }
 
     public void addTujuanOnly(String lokasi){
-        LLNode newNode = new LLNode(lokasi);
+        LLNode newNode = new LLNode(lokasi, "-", 0f);
         if (head == null) {
             head = tail = newNode;
         } else {
