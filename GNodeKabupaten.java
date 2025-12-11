@@ -2,11 +2,9 @@ public class GNodeKabupaten {
     String namaKabupaten;
     boolean visited;
     float jarakDariStart;
-    
     GEdgeKabupaten firstEdgeKab;
     GNodeKabupaten prev;
     GNodeKabupaten next;
-    
     GraphWisata graphWisata;
 
     public GNodeKabupaten(String nama) {

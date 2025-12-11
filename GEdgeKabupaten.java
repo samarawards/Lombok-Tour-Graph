@@ -2,7 +2,6 @@ public class GEdgeKabupaten {
     GNodeKabupaten fromKab;
     GNodeKabupaten toKab;
     float weight;
-
     GEdgeKabupaten next;
 
     public GEdgeKabupaten(GNodeKabupaten from, GNodeKabupaten to, float weight) {
