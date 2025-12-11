@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 public class LLNode {
     String lokasi;
     String jenis;
