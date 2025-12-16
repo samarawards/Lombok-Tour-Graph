@@ -11,7 +11,6 @@ public class LLNode {
         this.next = null;
     }
 
-    
     String namaPengunjung;
     int rating;
     String komentar;

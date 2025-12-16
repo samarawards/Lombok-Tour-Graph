@@ -14,13 +14,4 @@ public class StackNode {
         this.indeks = indeks;
         this.next = null;
     }
-
-    public void display() {
-        System.out.print("[" + indeks + "] ");
-        for (int i = 0; i < rating; i++) {
-            System.out.print("⭐");
-        }
-        System.out.println(" - " + namaPengunjung + " (" + tanggal + ")");
-        System.out.println("    \"" + komentar + "\"");
-    }
 }

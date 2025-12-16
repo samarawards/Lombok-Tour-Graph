@@ -88,12 +88,12 @@ public class Main {
         kabupatenList.addKabupaten("Lombok Barat 1");
         kabupatenList.addKabupaten("Lombok Barat 2");
         kabupatenList.addKabupaten("Lombok Barat 3");
-        kabupatenList.addKabupaten("Lombok Tengah ");
+        kabupatenList.addKabupaten("Lombok Tengah");
         kabupatenList.addKabupaten("Lombok Timur");
         kabupatenList.addKabupaten("Lombok Utara");
 
         LLNode current = kabupatenList.head;
-        while (current.next != null) {
+        while (current != null) {
             GNodeKabupaten kab = graph.getNode(current.lokasi);
             if (kab != null && !kab.graphWisata.isEmpty()) {
                 kab.graphWisata.displayWisata();
@@ -428,7 +428,7 @@ public class Main {
                         default:
                             System.out.println("[X] Pilihan tidak valid");
                     }
-                    break;
+                break;
 
                 case "4":
 
@@ -515,9 +515,9 @@ public class Main {
                         System.out.println("  [Info] Perjalanan dimulai...");
                         System.out.println("\n[Sistem] Menghitung rute terbaik...\n");
 
-                        PathResult rutaKabupaten = graph.dijkstra(lokasiSekarang, kabupatenTujuan);
+                        PathResult ruteKabupaten = graph.dijkstra(lokasiSekarang, kabupatenTujuan);
 
-                        if (!rutaKabupaten.found) {
+                        if (!ruteKabupaten.found) {
                             System.out.println("[X] Tidak dapat menemukan rute ke " + kabupatenTujuan);
                             continue;
                         }
@@ -536,17 +536,17 @@ public class Main {
                             continue;
                         }
 
-                        PathResult rutaWisata = kabNode.graphWisata.dijkstra(entryWisata.namaWisata, namaTujuan);
+                        PathResult ruteWisata = kabNode.graphWisata.dijkstra(entryWisata.namaWisata, namaTujuan);
 
-                        if (!rutaWisata.found) {
+                        if (!ruteWisata.found) {
                             System.out.println("[X] Tidak dapat menemukan rute ke wisata " + namaTujuan);
                             continue;
                         }
 
-                        displayRuteKabupaten(rutaKabupaten, lokasiSekarang, kabupatenTujuan);
-                        displayRuteWisata(rutaWisata, kabupatenTujuan);
+                        displayRuteKabupaten(ruteKabupaten, lokasiSekarang, kabupatenTujuan);
+                        displayRuteWisata(ruteWisata, kabupatenTujuan);
 
-                        simpanJalurKeLinkedList(orang.jalur, rutaKabupaten, rutaWisata, kabupatenTujuan);
+                        simpanJalurKeLinkedList(orang.jalur, ruteKabupaten, ruteWisata, kabupatenTujuan);
 
                         System.out.println("\n===========================================================");
                         System.out.println("  [V] Tiba di " + namaTujuan + "!");
@@ -651,8 +651,8 @@ public class Main {
 
                 default:
                     System.out.println("[X] Pilihan tidak valid. Silakan pilih 1-5.");
+                    
             }
-
         } while (running);
         
         input.close();

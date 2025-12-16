@@ -61,6 +61,7 @@ public class SortingManager {
         for (int i = 0; i < panjang - 1; i++) {
             LLNode current = head;
             LLNode prev = null;
+            boolean sudahTerurut = true;
             
             for (int j = 0; j < panjang - i - 1; j++) {
                 if (current.next == null) break;
@@ -77,6 +78,7 @@ public class SortingManager {
                 }
                 
                 if (perluTukar) {
+                    sudahTerurut = false;
                     LLNode nextNode = current.next;
                     current.next = nextNode.next;
                     nextNode.next = current;
@@ -93,6 +95,7 @@ public class SortingManager {
                     current = current.next;
                 }
             }
+            if(sudahTerurut) break;
         }
         
         return head;
@@ -106,6 +109,7 @@ public class SortingManager {
         for (int i = 0; i < panjang - 1; i++) {
             LLNode current = head;
             LLNode prev = null;
+            boolean sudahTerurut = true;
             
             for (int j = 0; j < panjang - i - 1; j++) {
                 if (current.next == null) break;
@@ -122,6 +126,7 @@ public class SortingManager {
                 }
                 
                 if (perluTukar) {
+                    sudahTerurut = false;
                     LLNode nextNode = current.next;
                     current.next = nextNode.next;
                     nextNode.next = current;
@@ -138,6 +143,7 @@ public class SortingManager {
                     current = current.next;
                 }
             }
+            if(sudahTerurut) break;
         }
         
         return head;

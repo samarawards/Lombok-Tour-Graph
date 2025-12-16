@@ -8,27 +8,4 @@ public class PathResult {
         this.totalJarak = totalJarak;
         this.found = found;
     }
-
-    public void displayPath() {
-        if (found) {
-            System.out.println("\n╔════════════════════════════════════════════╗");
-            System.out.println("║        RUTE PERJALANAN                     ║");
-            System.out.println("╠════════════════════════════════════════════╣");
-            System.out.println("║ " + jalur);
-            System.out.println("╠════════════════════════════════════════════╣");
-            System.out.println("║ Total Jarak: " + totalJarak + " km");
-            System.out.println("╚════════════════════════════════════════════╝");
-        } else {
-            System.out.println("\n[X] Rute tidak ditemukan!");
-        }
-    }
-    
-    public void displaySimple() {
-        if (found) {
-            System.out.println("Rute: " + jalur);
-            System.out.println("Total Jarak: " + totalJarak + " km");
-        } else {
-            System.out.println("[X] Rute tidak ditemukan!");
-        }
-    }
 }
