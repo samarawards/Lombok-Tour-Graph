@@ -408,9 +408,10 @@ public class Main {
                     System.out.println("  3. Kembali");
                     System.out.println("===========================================================");
                     System.out.print("Pilih: ");
-                    String pilihAntri = input.next();
+                    String pilihAntri = input.next(); 
                     switch (pilihAntri) {
                         case "1":
+                            input.nextLine();
                             queue.displayQueue();
                             break;
                         case "2":
@@ -419,7 +420,7 @@ public class Main {
                             String name = input.nextLine();
                             System.out.print("Tanggal Tour (DD-MM-YYYY): ");
                             String tanggal = input.nextLine();
-                            queue.enqueue(name, tanggal);
+                            queue.enqueueCondi(name, tanggal);
                             System.out.println("\n[V] Anda berhasil masuk ke dalam antrian!");
                             System.out.println("    Tanggal tour: " + tanggal);
                             break;
