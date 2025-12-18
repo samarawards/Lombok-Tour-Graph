@@ -22,27 +22,20 @@ public class Main {
     public static GraphKabupaten loadData() {
         GraphKabupaten gKab = new GraphKabupaten();
         
-        gKab.addJalurKab("Mataram", "Lombok Barat 1", 15.7f);
-        gKab.addJalurKab("Mataram", "Lombok Barat 2", 21.2f);
-        gKab.addJalurKab("Mataram", "Lombok Barat 3", 10);
-        gKab.addJalurKab("Mataram", "Lombok Tengah", 37);
-        gKab.addJalurKab("Mataram", "Lombok Timur", 89.6f);
-        gKab.addJalurKab("Mataram", "Lombok Utara", 42);
+        gKab.addJalurKab("Mataram", "Lombok Barat 1", 5.1f); // Gunung Sari
+        gKab.addJalurKab("Mataram", "Lombok Barat 2", 10.2f); // Labuapi
+        gKab.addJalurKab("Mataram", "Lombok Barat 3", 13.2f); // Narmada
 
-        gKab.addJalurKab("Lombok Barat 1", "Lombok Barat 3", 20f);
-        gKab.addJalurKab("Lombok Barat 1", "Lombok Barat 2", 36f);
-        gKab.addJalurKab("Lombok Barat 3", "Lombok Barat 2", 12f);
+        gKab.addJalurKab("Lombok Barat 1", "Lombok Barat 3", 15.4f);
+        gKab.addJalurKab("Lombok Barat 3", "Lombok Barat 2", 12.4f);
 
-        gKab.addJalurKab("Lombok Barat 3", "Lombok Tengah", 25f);
-        gKab.addJalurKab("Lombok Barat 1", "Lombok Utara", 22f);
-        gKab.addJalurKab("Lombok Barat 2", "Lombok Tengah", 30f);
-        gKab.addJalurKab("Lombok Barat 2", "Lombok Timur", 75f);
-        gKab.addJalurKab("Lombok Barat 1", "Lombok Timur", 95f);
+        gKab.addJalurKab("Lombok Barat 3", "Lombok Tengah", 18.7f);
+        gKab.addJalurKab("Lombok Barat 1", "Lombok Utara", 48.1f);
+        gKab.addJalurKab("Lombok Barat 2", "Lombok Tengah", 22.9f);
 
-        gKab.addJalurKab("Lombok Tengah", "Lombok Timur", 55f);
-        gKab.addJalurKab("Lombok Tengah", "Lombok Utara", 50f);
+        gKab.addJalurKab("Lombok Tengah", "Lombok Timur", 49.2f);
 
-        gKab.addJalurKab("Lombok Utara", "Lombok Timur", 70f);
+        gKab.addJalurKab("Lombok Utara", "Lombok Timur", 89.6f);
 
         GNodeKabupaten lombokBarat1 = gKab.getNode("Lombok Barat 1");
         if (lombokBarat1 != null) {
